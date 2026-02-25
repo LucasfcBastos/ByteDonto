@@ -1,0 +1,54 @@
+/* IMPORTING FONTS */
+@font-face {
+    font-family: "Amiko-Bold";
+    src: url("../assets/font/Amiko-Bold.ttf") format("truetype");
+}
+@font-face {
+    font-family: "Amiko-Regular";
+    src: url("../assets/font/Amiko-Regular.ttf") format("truetype");
+}
+@font-face {
+    font-family: "Amiko-SemiBold";
+    src: url("../assets/font/Amiko-SemiBold.ttf") format("truetype");
+}
+
+/* GLOBAL VARIABLES */
+:root {
+    --SpanText: 32px;
+    --H1Text: 20px;
+    --PText: 14px;
+    --LabelText: 10px;
+
+    --ThemeColor: #FFFFFF;
+    --BackColor: #F7F7F7;
+    --TextColor: #000000;
+    --LineColor: #999999;
+
+    --PrimaryColorsE: #458EE5;
+    --PrimaryColorsThemeE: #143966;
+}
+
+/* BODY STYLING */
+body {
+    background-color: var(--ColorTheme);
+    font-family: "Amiko-Regular";
+    margin: 0;
+    background-color: var(--ThemeColor);
+}
+
+/* TEXT STYLING */
+span {
+    font-size: var(--SpanText);
+    font-family: "Amiko-Bold";
+}
+
+h1 {
+    font-size: var(--H1Text);
+    font-family: "Amiko-SemiBold";
+    margin: 0;
+}
+
+h1#logo {
+    font-size: calc(var(--H1Text) + 10px);
+    color: var(--PrimaryColorsE);
+}

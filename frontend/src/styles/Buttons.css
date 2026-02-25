@@ -1,0 +1,18 @@
+button {
+    padding: 10px 20px;
+    border-radius: 12px;
+    border: 0px;
+    cursor: pointer;
+}
+
+button.camp {
+    background-color: var(--PrimaryColorsE);
+}
+
+button.camp h1 {
+    color: var(--ThemeColor);
+}
+
+button.camp:hover {
+    background-color: var(--PrimaryColorsThemeE);
+}

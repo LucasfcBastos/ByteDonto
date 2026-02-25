@@ -1,0 +1,15 @@
+section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--ThemeColor);
+    padding: 1em;
+    width: calc(100% - 2em);
+    border-bottom: 2px solid var(--LineColor);
+    position: fixed;
+}
+
+section div {
+    display: flex;
+    gap: 1em;
+}
