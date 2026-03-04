@@ -1,6 +1,8 @@
 /* IMPORTS OF COMPONENTS */
-import Section from "../../components/Section";
-import '../styles/LandingPage.css'
+import Section from "../../components/SectionNotAuth";
+import Button from "../../components/buttons/ButtonsRediBorder";
+import Footer from "../../components/FooterNotAuth";
+import '../../styles/LandingPage.css'
 
 /* MAIN COMPONENT */
 function LandingPage() {
@@ -13,11 +15,14 @@ function LandingPage() {
                         O MELHOR SOFTWARE DE GESTÃO DE <a>CLÍNICAS</a> É COMUNICAÇÃO DE PACIENTE QUE VOCÊ VAI ENCONTRAR
                     </span>
 
-                    <h1 className="third_quartile">
+                    <h1 className="text75">
                         A plataforma completa para gestão odontologica. Gerencie sua clínica enquanto a IA melhora o relacionamento entre paciente e clínica.
                     </h1>
+
+                    <Button text={"Vamos Começar"} />
                 </div>
             </div>
+            <Footer />
         </>
     );
 }

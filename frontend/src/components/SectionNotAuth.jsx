@@ -3,14 +3,16 @@ import ButtonsCamps from "./buttons/ButtonsCamps";
 import '../styles/Section.css'
 
 /* MAIN COMPONENT */
-function Section() {
+function SectionNotAuth() {
     return (
         <>
             <section>
                 <h1 id="logo">BYTE DONTO</h1>
                 <div>
                     <ButtonsCamps type={"LOGIN"} />
-                    <ButtonsCamps type={"CADASTRO"} />
+                    <div className="out">
+                        <ButtonsCamps type={"CADASTRO"} />
+                    </div>
                 </div>
             </section>
         </>
@@ -18,4 +20,4 @@ function Section() {
 }
 
 /* STANDARD EXPORT */
-export default Section;
+export default SectionNotAuth;

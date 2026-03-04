@@ -22,6 +22,7 @@
     --ThemeColor: #FFFFFF;
     --BackColor: #F7F7F7;
     --TextColor: #000000;
+    --TextColor75: #000000bf;
     --LineColor: #999999;
 
     --PrimaryColorsE: #458EE5;
@@ -48,7 +49,15 @@ h1 {
     margin: 0;
 }
 
-h1#logo {
-    font-size: calc(var(--H1Text) + 10px);
-    color: var(--PrimaryColorsE);
+p {
+    font-size: var(--PText);
+    margin: 0;
+}
+
+label {
+    font-size: var(--LabelText);
+}
+
+.text75 {
+    color: var(--TextColor75)
 }

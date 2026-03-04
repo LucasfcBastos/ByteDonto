@@ -1,0 +1,30 @@
+div.start {
+    background-color: var(--BackColor);
+    height: calc(100dvh - 5em);
+    align-content: center;
+    justify-items: center;
+    margin-top: 5em;
+}
+
+div.start div.centralize {
+    display: flex;
+    flex-direction: column;
+    width: 51%;
+    text-align: center;
+    align-items: center;
+    row-gap: 1em;
+}
+
+div.start div.centralize a {
+    color: var(--PrimaryColorsE);
+}
+
+@media (max-width: 765px) {
+    div.start div.centralize {
+        width: 90%;
+    }
+
+    div.start div.centralize button {
+        width: 60%;
+    }
+}

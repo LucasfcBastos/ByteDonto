@@ -16,3 +16,17 @@ button.camp h1 {
 button.camp:hover {
     background-color: var(--PrimaryColorsThemeE);
 }
+
+button.redi {
+    border: 2px solid var(--PrimaryColorsE);
+    background-color: transparent;
+    width: 40%;
+}
+
+button.redi:hover {
+    background-color: var(--PrimaryColorsE);
+}
+
+button.redi:hover h1 {
+    color: var(--ThemeColor);
+}

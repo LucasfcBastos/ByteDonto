@@ -7,9 +7,21 @@ section {
     width: calc(100% - 2em);
     border-bottom: 2px solid var(--LineColor);
     position: fixed;
+    top: 0;
 }
 
 section div {
     display: flex;
     gap: 1em;
+}
+
+section #logo {
+    font-size: calc(var(--H1Text) + 10px);
+    color: var(--PrimaryColorsE);
+}
+
+@media (max-width: 765px) {
+    .out {
+        display: none;
+    }
 }
