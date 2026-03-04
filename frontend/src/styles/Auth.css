@@ -1,0 +1,201 @@
+/* GOOGLE BUTTON */
+button.btn-google {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 11px;
+    background-color: #ffffff;
+    border: 1.5px solid var(--LineColor);
+    border-radius: 12px;
+    cursor: pointer;
+    font-family: "Amiko-SemiBold";
+    font-size: 14px;
+    color: var(--TextColor);
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+button.btn-google:hover {
+    background-color: var(--BackColor);
+    border-color: #aaaaaa;
+}
+
+button.btn-google:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* AUTH PAGE LAYOUT */
+
+div.auth-page {
+    background-color: var(--BackColor);
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2em 1em;
+}
+
+div.auth-card {
+    background-color: var(--ThemeColor);
+    border-radius: 16px;
+    padding: 2.5em 2em;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+}
+
+/* LOGO / HEADER */
+div.auth-card div.auth-header {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4em;
+}
+
+div.auth-card div.auth-header span {
+    font-size: 22px;
+    color: var(--PrimaryColorsE);
+}
+
+div.auth-card div.auth-header p {
+    color: var(--TextColor75);
+}
+
+/* FORM */
+div.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+div.auth-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3em;
+}
+
+div.auth-field label {
+    font-size: 11px;
+    font-family: "Amiko-SemiBold";
+    color: var(--TextColor75);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+div.auth-field input {
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1.5px solid var(--LineColor);
+    font-family: "Amiko-Regular";
+    font-size: 14px;
+    background-color: var(--BackColor);
+    color: var(--TextColor);
+    transition: border-color 0.2s;
+    outline: none;
+}
+
+div.auth-field input:focus {
+    border-color: var(--PrimaryColorsE);
+}
+
+/* ERROR MESSAGE */
+p.auth-error {
+    color: #e05050;
+    font-size: 12px;
+    text-align: center;
+    padding: 8px 12px;
+    background-color: #fdecea;
+    border-radius: 8px;
+}
+
+/* SUBMIT BUTTON */
+button.auth-submit {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--PrimaryColorsE);
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-top: 0.5em;
+}
+
+button.auth-submit:hover {
+    background-color: var(--PrimaryColorsThemeE);
+}
+
+button.auth-submit h1 {
+    color: var(--ThemeColor);
+    font-size: 15px;
+}
+
+button.auth-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* FOOTER LINK */
+div.auth-footer-link {
+    text-align: center;
+}
+
+div.auth-footer-link p {
+    color: var(--TextColor75);
+}
+
+div.auth-footer-link a {
+    color: var(--PrimaryColorsE);
+    cursor: pointer;
+    font-family: "Amiko-SemiBold";
+    text-decoration: none;
+}
+
+div.auth-footer-link a:hover {
+    color: var(--PrimaryColorsThemeE);
+}
+
+/* DIVIDER */
+div.auth-divider {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    color: var(--LineColor);
+    font-size: 12px;
+}
+
+div.auth-divider::before,
+div.auth-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background-color: var(--LineColor);
+}
+
+/* SELECT FIELD */
+div.auth-field select {
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1.5px solid var(--LineColor);
+    font-family: "Amiko-Regular";
+    font-size: 14px;
+    background-color: var(--BackColor);
+    color: var(--TextColor);
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+div.auth-field select:focus {
+    border-color: var(--PrimaryColorsE);
+}
+
+@media (max-width: 480px) {
+    div.auth-card {
+        padding: 2em 1.2em;
+    }
+}
