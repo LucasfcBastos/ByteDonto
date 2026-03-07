@@ -26,7 +26,32 @@ nvm use 20
 
 ## 1.2. Rodar o projeto
 
-Entrar dentro do front:
+Entra dentro do back:
+```bash
+cd backend/
+```
+
+Criar um ambiente virtual:
+```bash
+python3 -m venv venv
+```
+
+Ativar o ambiente virtual:
+```bash
+source venv/bin/activate
+```
+
+Instalar as dependências:
+```bash
+pip install -r requirements.txt
+```
+
+Rodar o servidor:
+```bash
+python3 run.py
+```
+
+Em outro bash, entrar dentro do front:
 ```bash
 cd frontend/
 ```

@@ -9,7 +9,8 @@ button.camp {
     background-color: var(--PrimaryColors);
 }
 
-button.camp h1 {
+button.camp h1,
+button.camp p {
     color: var(--ThemeColor);
 }
 

@@ -3,7 +3,7 @@ import '../../styles/Footer.css'
 function FooterNotAuth() {
     return (
         <>
-            <footer>
+            <footer className='not-auth'>
                 <h1 id="logo">BYTE DONTO</h1>
                 <div className='medio'>
                     <div>

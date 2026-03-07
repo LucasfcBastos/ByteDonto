@@ -5,7 +5,7 @@ function FooterAuth({ type_styles, text }) {
 
     return (
         <>
-            <footer className={`${type_styles}`}>
+            <footer className={`${type_styles} auth`}>
                 <h1 id="logo">BYTE DONTO</h1>
                 <div className='medio'>
                     <div className='frases'>
@@ -26,7 +26,7 @@ function FooterAuth({ type_styles, text }) {
                         <p>+55 (66) XXXX-XXXX</p>
                     </div>
                 </div>
-                <div className='bottom'>
+                <div className='bottom text75'>
                     <label>BYTE DONTO SERVICOS EM GESTÃO E SAUDE LTDA | CNPJ: XX.XXX.XXX/XXXX-XX</label>
                     <label>label© 2025 ByteDonto - Todos os direitos reservados</label>
                 </div>

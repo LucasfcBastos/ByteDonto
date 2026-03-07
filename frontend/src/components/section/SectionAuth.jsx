@@ -12,10 +12,9 @@ function SectionAuth({ type_styles }) {
                 <h1 id="logo">BYTE DONTO</h1>
                 <div>
                     <button
-                        className="auth-submit"
                         onClick={logout}
                     >
-                    <h1>{user?.perfil?.perfil || "name_user"} = go out</h1>
+                    <h1>{user?.perfil?.perfil || "name_user"}</h1>
                 </button>
                 </div>
             </section>

@@ -1,8 +1,8 @@
 main {
     background-color: var(--PrimaryColorsBack);
-    margin-top: 5.3em;
+    margin-top: 5em;
     width: calc(100% - 2em);
-    min-height: calc(100dvh - (19.2em + 2em));
+    min-height: calc(100dvh - (5em + 2em));
     padding: 1em;
     display: flex;
     flex-direction: column;

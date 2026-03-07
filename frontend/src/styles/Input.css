@@ -1,0 +1,9 @@
+input {
+    padding: 10px 14px;
+    border-radius: 12px;
+    border: 1.5px solid var(--LineColor);
+    font-family: "Amiko-Regular";
+    background-color: var(--ThemeColor);
+    color: var(--TextColor);
+    transition: border-color 0.2s;
+}

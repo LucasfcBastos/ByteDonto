@@ -12,8 +12,8 @@ footer #logo {
     color: var(--ThemeColor);
 }
 
-footer label,
-footer p {
+footer.not-auth label,
+footer.not-auth p {
     color: var(--ThemeColor);
 }
 
@@ -34,6 +34,14 @@ footer .medio {
 
 footer .medio div {
     width: 100%;
+}
+
+footer.auth {
+    background-color: var(--PrimaryColorsBack);
+}
+
+footer.auth #logo {
+    color: var(--PrimaryColors);
 }
 
 @media (max-width: 765px) {
