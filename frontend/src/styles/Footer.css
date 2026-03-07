@@ -1,5 +1,5 @@
 footer {
-    background-color: var(--PrimaryColorsE);
+    background-color: var(--PrimaryColors);
     padding: 1em;
     width: calc(100% - 2em);
     display: flex;

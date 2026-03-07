@@ -6,7 +6,7 @@ button {
 }
 
 button.camp {
-    background-color: var(--PrimaryColorsE);
+    background-color: var(--PrimaryColors);
 }
 
 button.camp h1 {
@@ -14,17 +14,17 @@ button.camp h1 {
 }
 
 button.camp:hover {
-    background-color: var(--PrimaryColorsThemeE);
+    background-color: var(--PrimaryColorsTheme);
 }
 
 button.redi {
-    border: 2px solid var(--PrimaryColorsE);
+    border: 2px solid var(--PrimaryColors);
     background-color: transparent;
     width: 40%;
 }
 
 button.redi:hover {
-    background-color: var(--PrimaryColorsE);
+    background-color: var(--PrimaryColors);
 }
 
 button.redi:hover h1 {

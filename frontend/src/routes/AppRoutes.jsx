@@ -4,6 +4,7 @@ import { AuthProvider, useAuth } from "../context/AuthContext";
 import LandingPage from "../pages/general/LandingPage";
 import LoginPage from "../pages/auth/LoginPage";
 import CadastroPage from "../pages/auth/CadastroPage";
+import ViewClinic from "../pages/owner/ViewClinic";
 import DashboardPage from "../pages/dashboard/DashboardPage";
 
 /* PRIVATE ROUTE — redireciona para login se não autenticado */
@@ -23,6 +24,7 @@ export function AppRoutes() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/cadastro" element={<CadastroPage />} />
+          <Route path="/owner/clinic" element={<ViewClinic />} />
 
           {/* Private routes */}
           <Route path="/dashboard" element={

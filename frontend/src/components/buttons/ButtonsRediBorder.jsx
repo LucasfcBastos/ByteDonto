@@ -1,11 +1,18 @@
 /* IMPORTS OF COMPONENTS */
+import { useNavigate } from "react-router-dom";
 import '../../styles/Buttons.css'
 
 /* MAIN COMPONENT */
-function ButtonsRediBorder({ text }) {
+function ButtonsRediBorder({ text, url }) {
+    const navigate = useNavigate();
+
+    function registration() {
+        navigate(`${url}`);
+    }
+
     return (
         <>
-            <button className='redi'>
+            <button className='redi' onClick={registration}>
                 <h1>{text}</h1>
             </button>
         </>

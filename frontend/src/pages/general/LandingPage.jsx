@@ -1,7 +1,7 @@
 /* IMPORTS OF COMPONENTS */
-import Section from "../../components/SectionNotAuth";
+import Section from "../../components/section/SectionNotAuth";
 import Button from "../../components/buttons/ButtonsRediBorder";
-import Footer from "../../components/FooterNotAuth";
+import Footer from "../../components/footer/FooterNotAuth";
 import '../../styles/LandingPage.css'
 
 /* MAIN COMPONENT */
@@ -19,7 +19,7 @@ function LandingPage() {
                         A plataforma completa para gestão odontologica. Gerencie sua clínica enquanto a IA melhora o relacionamento entre paciente e clínica.
                     </h1>
 
-                    <Button text={"Vamos Começar"} />
+                    <Button text={"Vamos Começar"} url="/cadastro" />
                 </div>
             </div>
             <Footer />

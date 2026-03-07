@@ -29,78 +29,60 @@ button.btn-google:disabled {
 /* AUTH PAGE LAYOUT */
 
 div.auth-page {
-    background-color: var(--BackColor);
+    background-color: var(--ThemeColor);
+    width: 50%;
     min-height: 100dvh;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2em 1em;
 }
 
 div.auth-card {
-    background-color: var(--ThemeColor);
-    border-radius: 16px;
-    padding: 2.5em 2em;
-    width: 100%;
+    padding: 1em;
+    width: calc(100% - 2em);
     max-width: 400px;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 1.5em;
+}
+
+div.auth-left {
+    position: absolute;
+    left: 0;
+}
+
+div.auth-right {
+    position: absolute;
+    right: 0;
+}
+
+/* FORM */
+
+form div.field {
     display: flex;
     flex-direction: column;
     gap: 1.5em;
 }
 
-/* LOGO / HEADER */
-div.auth-card div.auth-header {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    gap: 0.4em;
-}
-
-div.auth-card div.auth-header span {
-    font-size: 22px;
-    color: var(--PrimaryColorsE);
-}
-
-div.auth-card div.auth-header p {
-    color: var(--TextColor75);
-}
-
-/* FORM */
-div.auth-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1em;
-}
-
-div.auth-field {
-    display: flex;
-    flex-direction: column;
-    gap: 0.3em;
-}
-
-div.auth-field label {
-    font-size: 11px;
-    font-family: "Amiko-SemiBold";
+form label {
     color: var(--TextColor75);
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    position: absolute;
+    padding: 0 5px;
+    background: white;
+    transform: translate(1em, -50%);
 }
 
-div.auth-field input {
+form input {
     padding: 10px 14px;
-    border-radius: 10px;
+    border-radius: 12px;
     border: 1.5px solid var(--LineColor);
     font-family: "Amiko-Regular";
-    font-size: 14px;
     background-color: var(--BackColor);
     color: var(--TextColor);
     transition: border-color 0.2s;
-    outline: none;
-}
-
-div.auth-field input:focus {
-    border-color: var(--PrimaryColorsE);
+    margin-bottom: 1.5em;
 }
 
 /* ERROR MESSAGE */
@@ -117,7 +99,7 @@ p.auth-error {
 button.auth-submit {
     width: 100%;
     padding: 12px;
-    background-color: var(--PrimaryColorsE);
+    background-color: var(--PrimaryColors);
     border: none;
     border-radius: 12px;
     cursor: pointer;
@@ -126,7 +108,7 @@ button.auth-submit {
 }
 
 button.auth-submit:hover {
-    background-color: var(--PrimaryColorsThemeE);
+    background-color: var(--PrimaryColorsTheme);
 }
 
 button.auth-submit h1 {
@@ -140,23 +122,18 @@ button.auth-submit:disabled {
 }
 
 /* FOOTER LINK */
-div.auth-footer-link {
+div.auth-footer {
     text-align: center;
 }
 
-div.auth-footer-link p {
+div.auth-page a {
     color: var(--TextColor75);
-}
-
-div.auth-footer-link a {
-    color: var(--PrimaryColorsE);
     cursor: pointer;
-    font-family: "Amiko-SemiBold";
     text-decoration: none;
 }
 
-div.auth-footer-link a:hover {
-    color: var(--PrimaryColorsThemeE);
+div.auth-page .auth-footer a {
+    color: var(--PrimaryColorsTheme);
 }
 
 /* DIVIDER */
@@ -191,11 +168,20 @@ div.auth-field select {
 }
 
 div.auth-field select:focus {
-    border-color: var(--PrimaryColorsE);
+    border-color: var(--PrimaryColors);
 }
 
-@media (max-width: 480px) {
+@media (max-width: 765px) {
+    div.auth-page {
+        background-color: var(--PrimaryColorsBack);
+        width: calc(100% - 2em);
+        min-height: calc(100dvh - 2em);
+        padding: 1em;
+    }
+
     div.auth-card {
-        padding: 2em 1.2em;
+        border-radius: 12px;
+        background-color: var(--ThemeColor);
+        padding: 1em;
     }
 }

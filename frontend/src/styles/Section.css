@@ -17,7 +17,7 @@ section div {
 
 section #logo {
     font-size: calc(var(--H1Text) + 10px);
-    color: var(--PrimaryColorsE);
+    color: var(--PrimaryColors);
 }
 
 @media (max-width: 765px) {

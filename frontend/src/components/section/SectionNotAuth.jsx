@@ -1,6 +1,6 @@
 /* IMPORTS OF COMPONENTS */
-import ButtonsCamps from "./buttons/ButtonsCamps";
-import '../styles/Section.css'
+import ButtonsCamps from "../buttons/ButtonsCamps";
+import '../../styles/Section.css'
 
 /* MAIN COMPONENT */
 function SectionNotAuth() {
@@ -9,10 +9,12 @@ function SectionNotAuth() {
             <section>
                 <h1 id="logo">BYTE DONTO</h1>
                 <div>
-                    <ButtonsCamps type={"LOGIN"} />
+                    <ButtonsCamps type={"LOGIN"} url="/login" />
+                    {/* 
+                    IMPLEMENTAÇÃO FUTURA
                     <div className="out">
                         <ButtonsCamps type={"CADASTRO"} />
-                    </div>
+                    </div>*/}
                 </div>
             </section>
         </>

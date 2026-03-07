@@ -16,7 +16,7 @@ div.start div.centralize {
 }
 
 div.start div.centralize a {
-    color: var(--PrimaryColorsE);
+    color: var(--PrimaryColors);
 }
 
 @media (max-width: 765px) {

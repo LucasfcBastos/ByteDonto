@@ -1,5 +1,4 @@
-
-import '../styles/Footer.css'
+import '../../styles/Footer.css'
 
 function FooterNotAuth() {
     return (

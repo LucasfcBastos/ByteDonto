@@ -1,0 +1,18 @@
+main {
+    background-color: var(--PrimaryColorsBack);
+    margin-top: 5.3em;
+    width: calc(100% - 2em);
+    min-height: calc(100dvh - (19.2em + 2em));
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+}
+
+main .camp-list {
+    background-color: var(--ThemeColor);
+    max-width: 100%;
+    border: 2px solid var(--LineColor);
+    border-radius: 12px;
+    padding: 1em;
+}

@@ -33,7 +33,7 @@ cd frontend/
 
 Instalar as independencias:
 ```bash
-npm install react-router-dom
+npm install react-router-dom @supabase/supabase-js
 ```
 
 Rodar o projeto:

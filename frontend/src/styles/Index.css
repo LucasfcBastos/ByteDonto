@@ -14,7 +14,7 @@
 
 /* GLOBAL VARIABLES */
 :root {
-    --SpanText: 32px;
+    --SpanText: 31px;
     --H1Text: 20px;
     --PText: 14px;
     --LabelText: 10px;
@@ -25,8 +25,15 @@
     --TextColor75: #000000bf;
     --LineColor: #999999;
 
-    --PrimaryColorsE: #458EE5;
-    --PrimaryColorsThemeE: #143966;
+    --PrimaryColors: #458EE5;
+    --PrimaryColorsTheme: #143966;
+    --PrimaryColorsBack: #BED4EE;
+}
+
+.owner {
+    --PrimaryColors: #C29926;
+    --PrimaryColorsTheme: #664C14;
+    --PrimaryColorsBack: #E5D9B8;
 }
 
 /* BODY STYLING */
