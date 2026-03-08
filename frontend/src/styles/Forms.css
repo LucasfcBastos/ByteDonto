@@ -44,3 +44,16 @@ form textarea {
     min-height: 3.8em;
     max-height: 15.3em;
 }
+
+@media (max-width: 765px) {
+    form .forms-section {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5em;
+    }
+
+    form .flex-inpus {
+        flex-direction: column;
+        gap: 0.5em;
+    }
+}
