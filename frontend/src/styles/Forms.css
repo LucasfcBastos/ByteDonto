@@ -1,0 +1,46 @@
+form .sec-title {
+    margin: 1em 0em;
+}
+
+form .flex-inpus {
+    display: flex;
+    gap: 1.5em;
+}
+
+form .flex-inpus .field {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+form label {
+    color: var(--TextColor);
+    text-transform: uppercase;
+    position: absolute;
+    padding: 0 5px;
+    background: white;
+    transform: translate(1em, -50%);
+}
+
+form input {
+    padding: 10px 14px;
+    border-radius: 12px;
+    border: 1.5px solid var(--LineColor);
+    font-family: "Amiko-Regular";
+    background-color: var(--BackColor);
+    color: var(--TextColor);
+    margin-bottom: 1.5em;
+}
+
+form textarea {
+    padding: 10px 14px;
+    border-radius: 12px;
+    border: 1.5px solid var(--LineColor);
+    font-family: "Amiko-Regular";
+    background-color: var(--BackColor);
+    color: var(--TextColor);
+    margin-bottom: 1.5em;
+    resize: vertical;
+    min-height: 3.8em;
+    max-height: 15.3em;
+}

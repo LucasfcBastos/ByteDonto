@@ -65,26 +65,6 @@ form div.field {
     gap: 1.5em;
 }
 
-form label {
-    color: var(--TextColor);
-    text-transform: uppercase;
-    position: absolute;
-    padding: 0 5px;
-    background: white;
-    transform: translate(1em, -50%);
-}
-
-form input {
-    padding: 10px 14px;
-    border-radius: 12px;
-    border: 1.5px solid var(--LineColor);
-    font-family: "Amiko-Regular";
-    background-color: var(--BackColor);
-    color: var(--TextColor);
-    transition: border-color 0.2s;
-    margin-bottom: 1.5em;
-}
-
 /* ERROR MESSAGE */
 p.auth-error {
     color: #e05050;

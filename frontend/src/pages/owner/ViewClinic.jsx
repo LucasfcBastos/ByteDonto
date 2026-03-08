@@ -24,7 +24,7 @@ function ViewClinic() {
                 <div>
                     <input placeholder="Buscar clínica por nome ou cnpj..." />
                 </div>
-                <div className="camp-list">
+                <div className="camp-clinic camp-list">
                     <h1>Clínicas Registrados</h1>
                     {/*
                     SE CASO O USUARIO NÃO TENHA NENHUM REGISTRO DE CLÍNICA [

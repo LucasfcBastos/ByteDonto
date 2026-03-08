@@ -9,10 +9,29 @@ main {
     gap: 1.5em;
 }
 
-main .camp-list {
+main .camp-clinic {
     background-color: var(--ThemeColor);
     max-width: 100%;
     border: 2px solid var(--LineColor);
     border-radius: 12px;
+}
+
+main .camp-clinic.camp-list {
     padding: 1em;
+}
+
+main .camp-clinic.camp-register {
+    padding: 1.5em;
+}
+
+main.register {
+    width: calc(100% - 8em);
+    min-height: calc(100dvh - (5em + 4em));
+    padding: 2em 4em;
+}
+
+a {
+    color: var(--TextColor75);
+    cursor: pointer;
+    text-decoration: none;
 }

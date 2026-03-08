@@ -26,7 +26,7 @@ function LoginPage() {
                 apiMe(session.access_token)
                     .then((perfil) => {
                         login(session.access_token, perfil);
-                        navigate("/dashboard");
+                        navigate("/owner/clinic");
                     })
                     .catch(() => { });
             }
