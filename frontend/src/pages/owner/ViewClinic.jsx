@@ -5,6 +5,7 @@ import Section from "../../components/section/SectionAuth"
 import Footer from "../../components/footer/FooterAuth"
 import Card from "../../components/card/CardInfo"
 import IMG from "../../assets/img/icon01.png"
+import ButtonP from "../../components/buttons/ButtonsRediText"
 import '../../styles/clinic.css';
 
 /* MAIN COMPONENT */
@@ -42,10 +43,16 @@ function ViewClinic() {
                     <div>
                         <h1>Informações gerais</h1>
                         <p className="text75">Tempo:</p>
+                        <select style={{ margin: "1.5em 0em"}}>
+                            <option>Hoje</option>
+                            <option>Nesta semana</option>
+                            <option>Neste mês</option>
+                            <option>Este ano</option>
+                        </select>
                         <div className="cards">
-                            <Card title="Nº Pacientes Cadastrado" date="0" />
-                            <Card title="Nº Consultas Cadastrado" date="0" />
-                            <Card title="Nº Consultas Finalizadas" date="0" />
+                            <Card title="Nº Pacientes Cadastrados" date="0" />
+                            <Card title="Nº Consultas Cadastradas" date="0" />
+                            <Card title="Nº de Consultas Finalizadas" date="0" />
                         </div>
                     </div>
                     <div>
@@ -53,6 +60,9 @@ function ViewClinic() {
                         <div className="cards">
                             <Card title="Nº de Especialista Ativos" date="0" />
                             <Card title="Nº de Atendimento Ativos" date="0" />
+                        </div>
+                        <div style={{width: "100%", display: "flex", justifyContent: "flex-end", margin: "1.5em 0em 0em 0em"}}>
+                            <ButtonP text={"Convidar Membro"} url={"/"} />
                         </div>
                     </div>
                 </div>
