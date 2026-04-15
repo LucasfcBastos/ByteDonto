@@ -41,3 +41,40 @@ export async function apiGetConsultas(token) {
     if (!res.ok) throw new Error(data.error || "Erro ao buscar consultas");
     return data;
 }
+
+/* --- CLÍNICAS --- */
+export async function apiCreateClinic(token, clinicData) {
+    const res = await fetch(`${API_URL}/api/clinicas/`, {
+        method: "POST",
+        headers: { 
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}` 
+        },
+        body: JSON.stringify(clinicData),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Erro ao criar clínica");
+    return data;
+}
+export async function apiGetClinic(token, clinicaId) {
+    const res = await fetch(`${API_URL}/api/clinicas/${clinicaId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Erro ao buscar clínica");
+    return data;
+}
+
+export async function apiUpdateClinic(token, clinicaId, clinicData) {
+    const res = await fetch(`${API_URL}/api/clinicas/${clinicaId}`, {
+        method: "PUT",
+        headers: { 
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}` 
+        },
+        body: JSON.stringify(clinicData),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Erro ao atualizar clínica");
+    return data;
+}

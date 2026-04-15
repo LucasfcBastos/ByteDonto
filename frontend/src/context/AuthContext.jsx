@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { apiMe } from "../services/api";
+import { supabase } from "../services/supabaseClient";
 
 const AuthContext = createContext(null);
 
@@ -29,10 +30,16 @@ export function AuthProvider({ children }) {
         setUser(userData);
     }
 
-    function logout() {
+    async function logout() {
         localStorage.removeItem("token");
         setToken(null);
         setUser(null);
+        try {
+            await supabase.auth.signOut();
+        } catch (e) {
+            console.error(e);
+        }
+        window.location.href = "/login";
     }
 
     return (

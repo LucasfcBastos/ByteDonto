@@ -13,8 +13,9 @@ function SectionAuth({ type_styles }) {
                 <div>
                     <button
                         onClick={logout}
+                        title="Desconectar da conta"
                     >
-                    <h1>{user?.perfil?.perfil || "name_user"}</h1>
+                    <h1>Sair ({user?.perfil?.perfil || "name_user"})</h1>
                 </button>
                 </div>
             </section>

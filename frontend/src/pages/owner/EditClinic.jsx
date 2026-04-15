@@ -1,7 +1,8 @@
 /* IMPORTS OF COMPONENTS */
 import { useState, useEffect } from "react";
 import { Link, useParams, Navigate } from "react-router-dom";
-import Data from '../../data/api_clinic';
+import { useAuth } from "../../context/AuthContext";
+import { apiGetClinic, apiUpdateClinic } from "../../services/api";
 import Section from "../../components/section/SectionAuth";
 import Footer from "../../components/footer/FooterAuth";
 import '../../styles/clinic.css';
@@ -9,18 +10,13 @@ import '../../styles/Forms.css';
 
 /* MAIN COMPONENT */
 function EditClinic() {
-    
     const { id } = useParams();
-
-    const clinic = Data.find(
-        (item) => item.id === Number(id)
-    );
+    const { token } = useAuth();
     
-    if (!clinic) {
-        return <Navigate to="/" replace />;
-    }
-
     /* STATES */
+    const [loading, setLoading] = useState(true);
+    const [saving, setSaving] = useState(false);
+    
     const [name_clinic, setNameClinic] = useState("");
     const [CNPJ, setCNPJ] = useState("");
     const [razao_social, setRazaoSocial] = useState("");
@@ -36,52 +32,58 @@ function EditClinic() {
     const [cidade, setCidade] = useState("");
     const [endereco, setEndereco] = useState("");
 
-    /* LOAD DATA INTO INPUTS */
+    /* LOAD DATA FROM API */
     useEffect(() => {
-        if (clinic) {
-            setNameClinic(clinic.name || "");
-            setCNPJ(clinic.cnpj || "");
-            setRazaoSocial(clinic.razao_social || "");
-            setResumo(clinic.resumo || "");
+        if (id && token) {
+            apiGetClinic(token, id)
+                .then((clinicData) => {
+                    setNameClinic(clinicData.name || "");
+                    setCNPJ(clinicData.cnpj || "");
+                    setRazaoSocial(clinicData.razao_social || "");
+                    setResumo(clinicData.resumo || "");
 
-            setWhatsapp(clinic.whatsapp || "");
-            setTelefone(clinic.telefone || "");
-            setInstagram(clinic.instagram || "");
-            setFacebook(clinic.facebook || "");
+                    setWhatsapp(clinicData.whatsapp || "");
+                    setTelefone(clinicData.telefone || "");
+                    setInstagram(clinicData.instagram || "");
+                    setFacebook(clinicData.facebook || "");
 
-            setPais(clinic.endereco?.pais || "");
-            setEstado(clinic.endereco?.estado || "");
-            setCidade(clinic.endereco?.cidade || "");
-            setEndereco(clinic.endereco?.logradouro || "");
+                    setPais(clinicData.endereco?.pais || "");
+                    setEstado(clinicData.endereco?.estado || "");
+                    setCidade(clinicData.endereco?.cidade || "");
+                    setEndereco(clinicData.endereco?.logradouro || "");
+                })
+                .catch((e) => {
+                    console.error("Erro ao carregar clínica", e);
+                    alert("Não foi possível carregar os dados.");
+                })
+                .finally(() => setLoading(false));
         }
-    }, [clinic]);
+    }, [id, token]);
 
     /* SUBMIT */
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
+        setSaving(true);
 
         const updatedClinic = {
-            id: clinic.id,
-            name: name_clinic,
+            nome: name_clinic,
             cnpj: CNPJ,
-            razao_social,
-            resumo,
-            whatsapp,
-            telefone,
-            instagram,
-            facebook,
-            endereco: {
-                pais,
-                estado,
-                cidade,
-                logradouro: endereco
-            }
+            telefone: telefone,
+            endereco: `${endereco}, ${cidade} - ${estado}, ${pais}`
         };
 
-        console.log("Dados atualizados:", updatedClinic);
-
-        // Aqui você pode enviar para API futuramente
+        try {
+            await apiUpdateClinic(token, id, updatedClinic);
+            alert("Dados da clínica salvos com sucesso no Supabase!");
+        } catch (e) {
+            console.error(e);
+            alert("Falha ao salvar: " + e.message);
+        } finally {
+            setSaving(false);
+        }
     }
+
+    if (loading) return <div style={{padding: '50px', textAlign: 'center'}}>Carregando os dados da nuvem...</div>;
 
     return (
         <>
@@ -232,8 +234,8 @@ function EditClinic() {
                             </div>
                             
                             <div style={{ display: "flex", justifyContent: "end" }}>
-                                <button type="submit" className="submit">
-                                    <h1>Salvar</h1>
+                                <button type="submit" className="submit" disabled={saving}>
+                                    <h1>{saving ? "Salvando..." : "Salvar"}</h1>
                                 </button>
                             </div>
 

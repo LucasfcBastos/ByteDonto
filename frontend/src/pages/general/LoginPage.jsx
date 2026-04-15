@@ -51,13 +51,27 @@ function LoginPage() {
         }
     }
 
-    /* Login com Google via Supabase OAuth */
     async function handleGoogleLogin() {
-        setGoogleLoading(true);
-        await supabase.auth.signInWithOAuth({
-            provider: "google",
-            options: { redirectTo: window.location.origin + "/login" },
-        });
+        try {
+            setGoogleLoading(true);
+            setError("");
+            const { error } = await supabase.auth.signInWithOAuth({
+                provider: "google",
+                options: { 
+                    redirectTo: window.location.origin + "/login",
+                    queryParams: {
+                        prompt: 'select_account'
+                    }
+                },
+            });
+            if (error) {
+                setError(error.message || "Erro ao conectar com o Google");
+                setGoogleLoading(false);
+            }
+        } catch (err) {
+            setError(err.message || "Erro inesperado ao conectar com o Google");
+            setGoogleLoading(false);
+        }
     }
 
     return (

@@ -1,6 +1,7 @@
-/* IMPORTS OF COMPONENTS */
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import { apiCreateClinic } from "../../services/api";
 import Section from "../../components/section/SectionAuth"
 import Footer from "../../components/footer/FooterAuth"
 import '../../styles/clinic.css';
@@ -8,6 +9,12 @@ import '../../styles/Forms.css';
 
 /* MAIN COMPONENT */
 function RegisterClinic() {
+    const { token } = useAuth();
+    const navigate = useNavigate();
+    
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
+
     const [name_clinic, setNameClinic] = useState("");
     const [CNPJ, setCNPJ] = useState("");
     const [razao_social, setRazaoSocial] = useState("");
@@ -28,13 +35,21 @@ function RegisterClinic() {
         setError("");
         setLoading(true);
 
+        const newClinic = {
+            nome: name_clinic,
+            cnpj: CNPJ,
+            telefone: telefone,
+            endereco: `${esdereco}, ${cidade} - ${estado}, ${pais}`
+        };
+
         try {
-            const { access_token } = await apiLogin(email, password);
-            const perfil = await apiMe(access_token);
-            login(access_token, perfil);
-            navigate("/owner/clinic");
+            const clinic = await apiCreateClinic(token, newClinic);
+            alert("Clínica registrada com sucesso!");
+            // Redireciona direto pra tela da dashboard ou tela de edição
+            navigate(`/owner/clinic/`);
         } catch (err) {
-            setError(err.message || "Email ou senha incorretos.");
+            setError(err.message || "Erro ao registrar clínica.");
+            alert(err.message || "Erro ao registrar clínica.");
         } finally {
             setLoading(false);
         }
@@ -199,8 +214,9 @@ function RegisterClinic() {
                                 <button
                                     type="submit"
                                     className="submit"
+                                    disabled={loading}
                                 >
-                                    <h1>Salvar</h1>
+                                    <h1>{loading ? "Salvando..." : "Salvar"}</h1>
                                 </button>
                             </div>
                         </form>
