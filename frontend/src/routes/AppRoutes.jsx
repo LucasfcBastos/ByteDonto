@@ -32,7 +32,7 @@ export function AppRoutes() {
           {/* ROTAS QUE VÃO SER PRIVADAS E SÓ ENTRA AUTHNTICADO COM TOKEN */}
           <Route path="/owner/clinic" element={<ListClinic />} />
           <Route path="/owner/clinic/register" element={<RegisterClinic />} />
-          <Route path="/owner/view/clinic" element={<ViewClinic />} />
+          <Route path="/owner/view-clinic/:id" element={<ViewClinic />} />
 
           {/* Private routes */}
           <Route path="/dashboard" element={

@@ -1,4 +1,6 @@
 /* IMPORTS OF COMPONENTS */
+import ApiClinic from "../../data/api_clinic"
+
 import Section from "../../components/section/SectionAuth"
 import ButtonH1 from "../../components/buttons/ButtonsRediTitle"
 import SideBar from "../../components/bar/SideBar"
@@ -11,17 +13,6 @@ import '../../styles/Input.css';
 
 /* MAIN COMPONENT */
 function ListClinic() {
-    const api_clinic = [
-    /*
-    */
-    {
-        id: 1,
-        logo: "",
-        name: "C.0.E - Centro Odontológico Especializado",
-        cnpj: "52.754.562/0001-24",
-        phone: "+55 (62) 96666-7777",
-    }
-    ];
 
     const opc_bar = [
         {
@@ -51,7 +42,7 @@ function ListClinic() {
                 <div className="camp-clinic camp-list">
                     <h1>Clínicas Registrados</h1>
                     {
-                        api_clinic.length === 0 ? (
+                        ApiClinic.length === 0 ? (
                             <CampNotList
                                 img={IMG}
                                 text_p="Nenhuma clínica foi registrada"
@@ -60,14 +51,15 @@ function ListClinic() {
                                 utl_btn="/owner/clinic/register"
                             />
                         ) : (
-                            api_clinic.map((api_clinic) => (
+                            ApiClinic.map((item) => (
                                 <CampList
-                                    key={api_clinic.id}
-                                    clinic_logo={api_clinic.logo}
+                                    key={item.id}
+                                    clinic_id={item.id}
+                                    clinic_logo={item.logo}
                                     clinic_img={IMG}
-                                    clinic_name={api_clinic.name}
-                                    clinic_cnpj={api_clinic.cnpj}
-                                    clinic_phone={api_clinic.phone}
+                                    clinic_name={item.name}
+                                    clinic_cnpj={item.cnpj}
+                                    clinic_phone={item.whatsapp}
                                 />
                             ))
                         )

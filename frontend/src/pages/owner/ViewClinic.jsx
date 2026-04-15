@@ -1,5 +1,6 @@
 /* IMPORTS OF COMPONENTS */
-import { Link } from "react-router-dom";
+import { Link, useParams, Navigate } from "react-router-dom";
+import Data from '../../data/api_clinic'
 import Section from "../../components/section/SectionAuth"
 import Footer from "../../components/footer/FooterAuth"
 import Card from "../../components/card/CardInfo"
@@ -8,26 +9,29 @@ import '../../styles/clinic.css';
 
 /* MAIN COMPONENT */
 function ViewClinic() {
-    const api_clinic = {
-        id: 1,
-        logo: "",
-        name: "C.0.E - Centro Odontológico Especializado",
-        cnpj: "52.754.562/0001-24",
-        phone: "+55 (62) 96666-7777",
-    };
 
+    const { id } = useParams();
+
+    const clinic = Data.find(
+        (item) => item.id === Number(id)
+    );
+    
+    if (!clinic) {
+        return <Navigate to="/" replace />;
+    }
+    
     return (
         <>
             <Section type_styles="owner" />
             <div className="owner view-header">
                 <div className="info">
                     <div className="circle">
-                        <img src={api_clinic.logo ? api_clinic.logo : IMG} />
+                        <img src={clinic.logo ? clinic.logo : IMG} />
                     </div>
                     <div className="text">
-                        <h1>{api_clinic.name}</h1>
+                        <h1>{clinic.name}</h1>
                         <div>
-                            <p>{api_clinic.cnpj} | {api_clinic.phone}</p>
+                            <p>{clinic.cnpj} | {clinic.whatsapp}</p>
                             <Link className="text75" to="/owner/clinic">Editar Clínica</Link>
                         </div>
                     </div>
@@ -47,8 +51,8 @@ function ViewClinic() {
                     <div>
                         <h1>Membros da equipe</h1>
                         <div className="cards">
-                            <Card title="Nº Pacientes Cadastrado" date="0" />
-                            <Card title="Nº Consultas Cadastrado" date="0" />
+                            <Card title="Nº de Especialista Ativos" date="0" />
+                            <Card title="Nº de Atendimento Ativos" date="0" />
                         </div>
                     </div>
                 </div>
