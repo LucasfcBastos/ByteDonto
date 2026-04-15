@@ -37,6 +37,11 @@ function ViewClinic() {
                         </div>
                     </div>
                 </div>
+                <div style={{margin: "1.5em 0em 0em 4em"}}>
+                    <p>
+                        <Link className="text75" to={`/owner/clinic`}>← Voltar para home</Link>
+                    </p>
+                </div>
             </div>
             <main className="owner register">
                 <div className="camp-clinic camp-view">
@@ -62,7 +67,7 @@ function ViewClinic() {
                             <Card title="Nº de Atendimento Ativos" date="0" />
                         </div>
                         <div style={{width: "100%", display: "flex", justifyContent: "flex-end", margin: "1.5em 0em 0em 0em"}}>
-                            <ButtonP text={"Convidar Membro"} url={"/"} />
+                            <ButtonP text={"Convidar Membro"} url={`/owner/bind-clinic/${id}`} />
                         </div>
                     </div>
                 </div>
