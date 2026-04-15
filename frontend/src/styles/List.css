@@ -22,6 +22,14 @@
 }
 
 .list img {
+    width: 3em;
+    margin-left: 0.5em;
+}
+
+.list .circle {
     background-color: var(--PrimaryColors);
-    width: 3.5em;
+    border-radius: 100%;
+    width: 4em;
+    height: 4em;
+    align-content: center;
 }

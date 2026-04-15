@@ -1,0 +1,16 @@
+.sidebar {
+    width: calc(20vw - 2em);
+    height: calc(100dvh - 7em);
+    background-color: var(--ThemeColor);
+    border-right: 2px solid var(--LineColor);
+    position: fixed;
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.mainBar {
+    width: calc(100% - 22.35vw);
+    margin-left: 20vw;
+}

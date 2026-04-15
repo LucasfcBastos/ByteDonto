@@ -6,7 +6,9 @@ function ListClinic({ clinic_logo, clinic_img, clinic_name, clinic_cnpj, clinic_
     return (
         <>
             <div className="list">
-                <img src={clinic_logo ? clinic_logo : clinic_img} />
+                <div className='circle'>
+                    <img src={clinic_logo ? clinic_logo : clinic_img} />
+                </div>
                 <div>
                     <p>{clinic_name}</p>
                     <p>{clinic_cnpj} | {clinic_phone}</p>

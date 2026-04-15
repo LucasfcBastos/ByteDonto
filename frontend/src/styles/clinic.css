@@ -9,6 +9,12 @@ main {
     gap: 1.5em;
 }
 
+main.register {
+    width: calc(100% - 8em);
+    min-height: calc(100dvh - (5em + 4em));
+    padding: 2em 4em;
+}
+
 main .camp-clinic {
     background-color: var(--ThemeColor);
     max-width: 100%;
@@ -24,16 +30,62 @@ main .camp-clinic.camp-register {
     padding: 1.5em;
 }
 
-main.register {
-    width: calc(100% - 8em);
-    min-height: calc(100dvh - (5em + 4em));
-    padding: 2em 4em;
+main .camp-clinic.camp-view {
+    margin-top: 11.5em;
+    padding: 1.5em;
 }
 
 a {
     color: var(--TextColor75);
     cursor: pointer;
     text-decoration: none;
+}
+
+/* owner/view/clinic */
+
+.view-header {
+    position: absolute;
+    width: 100%;
+    margin-left: 0em;
+    height: 6em;
+    background-color: var(--PrimaryColorsTheme);
+}
+
+.view-header .info {
+    margin: 4em 4em 0 4em;
+    width: calc(100% - 8em);
+    display: flex;
+    align-items: end;
+}
+
+.view-header .info img {
+    width: 5em;
+    margin-left: 1.3em;
+}
+
+.view-header .info .circle {
+    background-color: var(--PrimaryColors);
+    border-radius: 100%;
+    width: 7.5em;
+    height: 7.5em;
+    align-content: center;
+    margin-right: 1em;
+}
+
+.view-header .info a {
+    text-decoration: underline;
+}
+
+.view-header .info div.text {
+    margin-bottom: 2.25em;
+}
+
+.view-header .info div.text div {
+    display: flex;
+    position: absolute;
+    width: calc(100% - 16.5em);
+    align-items: center;
+    justify-content: space-between;
 }
 
 @media (max-width: 765px) {
