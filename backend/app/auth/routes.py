@@ -77,12 +77,13 @@ def me():
         user = user_response.user
 
         # Buscar perfil do usuário na tabela usuarios
-        perfil = supabase.table("usuarios").select("*").eq("id", user.id).single().execute()
+        perfil_response = supabase.table("usuarios").select("*").eq("id", user.id).execute()
+        perfil_data = perfil_response.data[0] if perfil_response.data else None
 
         return jsonify({
             "id": user.id,
             "email": user.email,
-            "perfil": perfil.data
+            "perfil": perfil_data
         }), 200
 
     except Exception as e:

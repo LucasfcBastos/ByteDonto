@@ -7,7 +7,7 @@ function ButtonsRediBorder({ text, url }) {
     const navigate = useNavigate();
 
     function registration() {
-        navigate(`${url}`);
+        if (url) navigate(url);
     }
 
     return (
