@@ -1,0 +1,14 @@
+.table-header,
+.table-row {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr 1fr;
+  padding: 12px 0;
+}
+
+.table-header {
+  border-bottom: 1px solid #ccc;
+}
+
+.table-row {
+  border-bottom: 1px solid #eee;
+}

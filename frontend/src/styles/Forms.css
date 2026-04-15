@@ -22,7 +22,8 @@ form label {
     transform: translate(1em, -50%);
 }
 
-form input {
+form input,
+form select {
     padding: 10px 14px;
     border-radius: 12px;
     border: 1.5px solid var(--LineColor);
@@ -43,6 +44,26 @@ form textarea {
     resize: vertical;
     min-height: 3.8em;
     max-height: 15.3em;
+}
+
+.forms-hover {
+    width: 100%;
+    height: calc(100dvh - 5em);
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.500);
+    justify-items: center;
+    align-content: center;
+    display: block;
+}
+
+.forms-hover .forms-card {
+    padding: 1.5em 1em 1em 1em;
+    background-color: white;
+    border-radius: 12px;
+}
+
+.forms-hover .forms-card input {
+    width: 25em;
 }
 
 @media (max-width: 765px) {

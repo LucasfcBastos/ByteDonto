@@ -21,6 +21,14 @@ form button.submit:hover {
     background-color: var(--PrimaryColorsTheme);
 }
 
+button.camp.not {
+    background-color: var(--NotPrimaryColors);
+}
+
+button.camp.not:hover {
+    background-color: var(--NotPrimaryColorsTheme);
+}
+
 button.redi {
     border: 2px solid var(--PrimaryColors);
     background-color: transparent;

@@ -28,6 +28,9 @@
     --PrimaryColors: #458EE5;
     --PrimaryColorsTheme: #143966;
     --PrimaryColorsBack: #BED4EE;
+
+    --NotPrimaryColors: #C22626;
+    --NotPrimaryColorsTheme: #661414;
 }
 
 .owner {

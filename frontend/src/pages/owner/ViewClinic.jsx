@@ -1,6 +1,7 @@
 /* IMPORTS OF COMPONENTS */
 import { Link, useParams, Navigate } from "react-router-dom";
 import Data from '../../data/api_clinic'
+import Vincula from '../../data/invites'
 import Section from "../../components/section/SectionAuth"
 import Footer from "../../components/footer/FooterAuth"
 import Card from "../../components/card/CardInfo"
@@ -63,7 +64,7 @@ function ViewClinic() {
                     <div>
                         <h1>Membros da equipe</h1>
                         <div className="cards">
-                            <Card title="Nº de Especialista Ativos" date="0" />
+                            <Card title="Nº de Especialista Ativos" date={Vincula.length} />
                             <Card title="Nº de Atendimento Ativos" date="0" />
                         </div>
                         <div style={{width: "100%", display: "flex", justifyContent: "flex-end", margin: "1.5em 0em 0em 0em"}}>
