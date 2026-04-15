@@ -34,13 +34,13 @@ function ViewClinic() {
                         <h1>{clinic.name}</h1>
                         <div>
                             <p>{clinic.cnpj} | {clinic.whatsapp}</p>
-                            <Link className="text75" to="/owner/clinic">Editar Clínica</Link>
+                            <Link className="text75" to={`/owner/edit-clinic/${id}`}>Editar Clínica</Link>
                         </div>
                     </div>
                 </div>
                 <div style={{margin: "1.5em 0em 0em 4em"}}>
                     <p>
-                        <Link className="text75" to={`/owner/clinic`}>← Voltar para home</Link>
+                        <Link className="text75" to="/owner/clinic">← Voltar para home</Link>
                     </p>
                 </div>
             </div>

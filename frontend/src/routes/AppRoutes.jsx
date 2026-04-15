@@ -10,6 +10,7 @@ import CadastroPage from "../pages/general/CadastroPage";
 import ListClinic from "../pages/owner/ListClinic";
 import ViewClinic from "../pages/owner/ViewClinic";
 import RegisterClinic from "../pages/owner/RegisterClinic";
+import EditClinic from "../pages/owner/EditClinic";
 import BindClinic from "../pages/owner/BindClinic";
 
 import DashboardPage from "../pages/dashboard/DashboardPage";
@@ -37,6 +38,7 @@ export function AppRoutes() {
           <Route path="/owner/clinic" element={<ListClinic />} />
           <Route path="/owner/clinic/register" element={<RegisterClinic />} />
           <Route path="/owner/view-clinic/:id" element={<ViewClinic />} />
+          <Route path="/owner/edit-clinic/:id" element={<EditClinic />} />
           <Route path="/owner/bind-clinic/:id" element={<BindClinic />} />
 
           {/* Private routes */}
