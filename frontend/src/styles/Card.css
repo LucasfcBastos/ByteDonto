@@ -1,0 +1,10 @@
+.card-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    border: 2px solid var(--LineColor);
+    border-top: 2px solid var(--PrimaryColors);
+    width: 100%;
+    padding: 1em;
+    border-radius: 6px;
+}

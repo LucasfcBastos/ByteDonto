@@ -2,6 +2,7 @@
 import { Link } from "react-router-dom";
 import Section from "../../components/section/SectionAuth"
 import Footer from "../../components/footer/FooterAuth"
+import Card from "../../components/card/CardInfo"
 import IMG from "../../assets/img/icon01.png"
 import '../../styles/clinic.css';
 
@@ -35,8 +36,20 @@ function ViewClinic() {
             <main className="owner register">
                 <div className="camp-clinic camp-view">
                     <div>
-                        <h1>Clínica</h1>
-                        <p className="text75">Olá, é muito importante que você adicione todos as informações da sua clínica para que melhorar a comunicação com seus pacientes.</p>
+                        <h1>Informações gerais</h1>
+                        <p className="text75">Tempo:</p>
+                        <div className="cards">
+                            <Card title="Nº Pacientes Cadastrado" date="0" />
+                            <Card title="Nº Consultas Cadastrado" date="0" />
+                            <Card title="Nº Consultas Finalizadas" date="0" />
+                        </div>
+                    </div>
+                    <div>
+                        <h1>Membros da equipe</h1>
+                        <div className="cards">
+                            <Card title="Nº Pacientes Cadastrado" date="0" />
+                            <Card title="Nº Consultas Cadastrado" date="0" />
+                        </div>
                     </div>
                 </div>
             </main>
