@@ -1,38 +1,65 @@
+/* Premium Footer Styling */
+
 footer {
-    background-color: var(--PrimaryColors);
-    padding: 1em;
-    width: calc(100% - 2em);
+    background-color: #0F172A; /* Slate 900 for a premium dark footer */
+    color: #94A3B8; /* Slate 400 for text */
+    padding: 4rem 2rem 2rem 2rem;
+    width: 100%;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    gap: 1.5em;
+    gap: 3rem;
 }
 
 footer #logo {
-    font-size: calc(var(--H1Text) + 10px);
-    color: var(--ThemeColor);
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: -0.025em;
+    color: #FFFFFF;
+    margin: 0;
 }
 
 footer.not-auth label,
 footer.not-auth p {
-    color: var(--ThemeColor);
+    color: #94A3B8;
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0;
+    text-transform: none;
+    letter-spacing: normal;
+    font-family: var(--font-primary);
 }
 
 footer #title {
-    margin-bottom: 1em;
+    margin-bottom: 1rem;
+    color: #FFFFFF;
+    font-weight: 700;
+    font-size: 16px;
 }
 
 footer .bottom {
     display: flex;
     flex-direction: column;
     text-align: center;
+    border-top: 1px solid #1E293B;
+    padding-top: 2rem;
+    gap: 0.5rem;
+}
+
+footer .bottom label {
+    font-family: var(--font-secondary, monospace);
+    font-size: 12px;
 }
 
 footer .medio {
     display: flex;
+    gap: 2rem;
 }
 
-
 footer .medio div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
     width: 100%;
 }
 
@@ -44,9 +71,9 @@ footer.auth #logo {
     color: var(--PrimaryColors);
 }
 
-@media (max-width: 765px) {
+@media (max-width: 768px) {
     footer .medio {
         flex-direction: column;
-        gap: 1em;
+        gap: 2rem;
     }
 }

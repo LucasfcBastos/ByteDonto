@@ -3,7 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { apiCreateClinic } from "../../services/api";
 import Section from "../../components/section/SectionAuth"
-import Footer from "../../components/footer/FooterAuth"
+import SideBar from "../../components/bar/SideBar"
+import IMG from "../../assets/img/icon01.png"
 import '../../styles/clinic.css';
 import '../../styles/Forms.css';
 
@@ -30,6 +31,16 @@ function RegisterClinic() {
     const [cidade, setCidade] = useState("");
     const [esdereco, setEndereco] = useState("");
 
+    const opc_bar = [
+        {
+            id: 1,
+            icon: IMG,
+            name: "Clínica",
+            url: "/owner/clinic/register",
+            style: "select"
+        }
+    ];
+
     async function handleSubmit(e) {
         e.preventDefault();
         setError("");
@@ -45,7 +56,6 @@ function RegisterClinic() {
         try {
             const clinic = await apiCreateClinic(token, newClinic);
             alert("Clínica registrada com sucesso!");
-            // Redireciona direto pra tela da dashboard ou tela de edição
             navigate(`/owner/clinic/`);
         } catch (err) {
             setError(err.message || "Erro ao registrar clínica.");
@@ -58,20 +68,21 @@ function RegisterClinic() {
     return (
         <>
             <Section type_styles="owner" />
+            <SideBar opc={opc_bar} styles="owner" />
             
-            <main className="owner register">
+            <main className="mainBar owner register">
                 <p>
-                    <Link className="text75" to="/owner/clinic">← Voltar para home</Link>
+                    <Link className="text75" to="/owner/clinic">← Voltar para Minhas Clínicas</Link>
                 </p>
                 <div className="camp-clinic camp-register">
                     <div>
-                        <h1>Clínica</h1>
-                        <p className="text75">Olá, é muito importante que você adicione todos as informações da sua clínica para que melhorar a comunicação com seus pacientes.</p>
+                        <h1 style={{margin: '0 0 0.5rem 0'}}>Configurações da Clínica</h1>
+                        <p className="text75">Preencha os dados abaixo para estruturar a presença da sua clínica no sistema.</p>
 
-                        <form onSubmit={handleSubmit}>
+                        <form onSubmit={handleSubmit} style={{marginTop: '2rem'}}>
 
                             <div className="forms-section">
-                                <p className="sec-title">Dados Basícos</p>
+                                <p className="sec-title">Dados Básicos</p>
                                 
                                 <div className="field">
                                     <label htmlFor="name_clinic">Nome da Clínica *</label>
@@ -210,23 +221,19 @@ function RegisterClinic() {
                                 </div>
                             </div>
                             
-                            <div style={{ display: "flex", justifyContent: "end" }}>
+                            <div style={{ display: "flex", justifyContent: "end", marginTop: '2rem' }}>
                                 <button
                                     type="submit"
                                     className="submit"
                                     disabled={loading}
                                 >
-                                    <h1>{loading ? "Salvando..." : "Salvar"}</h1>
+                                    {loading ? "Salvando..." : "Salvar Configurações"}
                                 </button>
                             </div>
                         </form>
                     </div>
                 </div>
             </main>
-            <Footer type_styles="owner" text={`Gestão
-                Eficiência
-                Resultados
-                Crescimento`} />
         </>
     );
 }

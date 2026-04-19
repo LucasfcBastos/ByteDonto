@@ -1,108 +1,222 @@
 main {
-    background-color: var(--PrimaryColorsBack);
-    margin-top: 5em;
-    width: calc(100% - 2em);
-    min-height: calc(100dvh - (5em + 2em));
-    padding: 1em;
+    background-color: #f8fafc;
+    margin-top: 80px;
+    width: 100%;
+    min-height: calc(100vh - 80px);
+    padding: 2.5rem;
     display: flex;
     flex-direction: column;
-    gap: 1.5em;
+    gap: 1.5rem;
+    box-sizing: border-box;
+}
+
+/* Background Thematic Gradients */
+main.mainBar.owner {
+    background: radial-gradient(ellipse at top, rgba(184, 134, 11, 0.12) 0%, #f8fafc 40%);
+}
+
+main.mainBar.specialist {
+    background: radial-gradient(ellipse at top, rgba(37, 99, 235, 0.12) 0%, #f8fafc 40%);
+}
+
+main.mainBar.reception {
+    background: radial-gradient(ellipse at top, rgba(22, 163, 74, 0.12) 0%, #f8fafc 40%);
+}
+
+/* Calendar Strip for Specialist */
+.calendar-strip {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.calendar-day {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 65px;
+    height: 80px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.calendar-day:hover {
+    background: rgba(255, 255, 255, 1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.calendar-day.active {
+    background: var(--PrimaryColorsTheme);
+    border-color: var(--PrimaryColorsTheme);
+    color: white;
+    box-shadow: 0 8px 20px -4px rgba(37, 99, 235, 0.4);
+}
+
+.calendar-day.active p, .calendar-day.active h3 {
+    color: white !important;
+}
+
+.calendar-day p {
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--TextColor75);
+    margin: 0 0 4px 0;
+}
+
+.calendar-day h3 {
+    font-size: 22px;
+    font-weight: 800;
+    font-family: var(--font-secondary);
+    color: var(--TextColor);
+    margin: 0;
 }
 
 main.register {
-    width: calc(100% - 8em);
-    min-height: calc(100dvh - (5em + 4em));
-    padding: 2em 4em;
+    padding: 2.5rem 4rem;
 }
 
+/* Premium Main Cards Container */
 main .camp-clinic {
-    background-color: var(--ThemeColor);
-    max-width: 100%;
-    border: 2px solid var(--LineColor);
-    border-radius: 12px;
-}
-
-main .camp-clinic.camp-list {
-    padding: 1em;
+    background-color: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+    border-radius: 20px;
+    padding: 2rem;
 }
 
 main .camp-clinic.camp-register {
-    padding: 1.5em;
+    padding: 2.5rem;
 }
 
 main .camp-clinic.camp-view {
-    margin-top: 13.5em;
-    padding: 1.5em;
+    padding: 2.5rem;
     display: flex;
     flex-direction: column;
-    gap: 1.5em;
+    gap: 2rem;
 }
 
 main .camp-clinic.camp-view .cards {
-    display: flex;
-    gap: 1.5em;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+/* Base Top Search Input */
+main > div > input {
+    width: 100%;
+    max-width: 500px;
 }
 
 a {
     color: var(--TextColor75);
     cursor: pointer;
     text-decoration: none;
+    transition: all 0.2s ease;
 }
 
-/* owner/view/clinic */
+a:hover {
+    color: var(--PrimaryColorsTheme);
+}
 
+/* owner/view/clinic Premium Header */
 .view-header {
-    position: absolute;
-    width: 100%;
-    height: 6em;
-    background-color: var(--PrimaryColorsTheme);
-}
-
-.view-header .info {
-    margin: 4em 4em 0 4em;
-    width: calc(100% - 8em);
+    background: linear-gradient(135deg, var(--PrimaryColorsTheme), var(--PrimaryColors));
+    border-radius: 24px;
+    padding: 2.5rem;
     display: flex;
-    align-items: end;
-}
-
-.view-header .info img {
-    width: 5em;
-    margin-left: 1.3em;
-}
-
-.view-header .info .circle {
-    background-color: var(--PrimaryColors);
-    border-radius: 100%;
-    width: 7.5em;
-    height: 7.5em;
-    align-content: center;
-    margin-right: 1em;
-}
-
-.view-header .info a {
-    text-decoration: underline;
-}
-
-.view-header .info div.text {
-    margin-bottom: 2.25em;
-}
-
-.view-header .info div.text div {
-    display: flex;
-    position: absolute;
-    width: calc(100% - 16.5em);
     align-items: center;
-    justify-content: space-between;
+    gap: 2.5rem;
+    box-shadow: 0 10px 30px -5px rgba(37, 99, 235, 0.3);
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.view-header::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 60%);
+    border-radius: 50%;
+    transform: translate(30%, -30%);
+}
+
+.view-header .circle {
+    background-color: white;
+    border-radius: 100%;
+    width: 120px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    z-index: 1;
+}
+
+.view-header .circle img {
+    height: 60%;
+    object-fit: contain;
+}
+
+.view-header .text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    color: white;
+    z-index: 1;
+    flex: 1;
+}
+
+.view-header .text h1 {
+    font-size: 28px;
+    margin: 0;
+    color: white;
+    font-weight: 800;
+}
+
+.view-header .text p {
+    font-size: 14px;
+    opacity: 0.9;
+    margin: 0;
+}
+
+.view-header .text a {
+    color: white;
+    text-decoration: underline;
+    opacity: 0.8;
+    font-size: 13px;
+    margin-top: 0.5rem;
+    display: inline-block;
+}
+
+.view-header .text a:hover {
+    opacity: 1;
+}
+
+.view-back-link {
+    margin-bottom: 1.5rem;
+    display: inline-block;
 }
 
 @media (max-width: 765px) {
     main.register {
-        width: calc(100% - 2em);
-        min-height: calc(100dvh - (5em + 4em));
-        padding: 2em 1em;
+        padding: 1.5rem 1rem;
     }
-
-    main .camp-clinic.camp-register {
-        padding: 1em;
+    .view-header {
+        flex-direction: column;
+        text-align: center;
+        padding: 2rem;
+        gap: 1.5rem;
     }
 }

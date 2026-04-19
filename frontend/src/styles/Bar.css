@@ -1,16 +1,37 @@
+/* Premium Sidebar Dashboard */
+
 .sidebar {
-    width: calc(20vw - 2em);
-    height: calc(100dvh - 7em);
-    background-color: var(--ThemeColor);
-    border-right: 2px solid var(--LineColor);
+    width: 260px;
+    height: calc(100vh - 80px); /* Discount topbar */
+    top: 80px; 
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-right: 1px solid rgba(226, 232, 240, 0.8);
     position: fixed;
-    padding: 1em;
+    left: 0;
+    padding: 1.5rem 1rem;
     display: flex;
     flex-direction: column;
-    gap: 1em;
+    gap: 0.5rem;
+    z-index: 40;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
 }
 
 .mainBar {
-    width: calc(100% - 22.35vw);
-    margin-left: 20vw;
+    width: calc(100% - 260px);
+    margin-left: 260px;
+    min-height: calc(100vh - 80px);
+    box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%); /* hidden on mobile initially */
+    }
+    .mainBar {
+        width: 100%;
+        margin-left: 0;
+    }
 }

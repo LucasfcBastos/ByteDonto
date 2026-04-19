@@ -1,35 +1,85 @@
+/* Empty state */
 .not-list {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1em;
+    justify-content: center;
+    gap: 1.5rem;
     text-align: center;
+    padding: 3rem 1rem;
 }
 
 .not-list img {
-    height: 10em;
+    height: 140px;
+    opacity: 0.8;
 }
 
+.not-list label {
+    font-size: 14px;
+    color: var(--TextColor75);
+    max-width: 400px;
+    line-height: 1.5;
+}
+
+/* Premium List Items */
 .list {
-    margin-top: 1.5em;
-    border-radius: 6px;
+    margin-top: 1rem;
+    border-radius: 16px;
     display: flex;
-    padding: 1em;
+    padding: 1.25rem 1.5rem;
     align-items: center;
-    gap: 1.5em;
-    border: 2px solid var(--LineColor);
+    gap: 1.5rem;
+    background: rgba(248, 250, 252, 0.5);
+    border: 1px solid rgba(226, 232, 240, 0.8);
     cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
 }
 
-.list img {
-    width: 3em;
-    margin-left: 0.5em;
+.list:hover {
+    background: #ffffff;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+    transform: translateY(-2px);
+    border-color: var(--PrimaryColorsTheme);
 }
 
 .list .circle {
-    background-color: var(--PrimaryColors);
-    border-radius: 100%;
-    width: 4em;
-    height: 4em;
-    align-content: center;
+    background: linear-gradient(135deg, var(--PrimaryColorsTheme), var(--PrimaryColors));
+    border-radius: 14px; 
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(37,99,235,0.2);
+    flex-shrink: 0;
+}
+
+.list img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+}
+
+.list > div:last-child {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.list p:first-child {
+    font-weight: 800;
+    font-size: 16px;
+    color: var(--TextColor);
+    margin: 0;
+    font-family: var(--font-primary);
+}
+
+.list p:last-child {
+    font-weight: 500;
+    font-size: 13px;
+    color: var(--TextColor75);
+    margin: 0;
+    font-family: var(--font-primary);
 }

@@ -4,7 +4,8 @@ import { Link, useParams, Navigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { apiGetClinic, apiUpdateClinic } from "../../services/api";
 import Section from "../../components/section/SectionAuth";
-import Footer from "../../components/footer/FooterAuth";
+import SideBar from "../../components/bar/SideBar";
+import IMG from "../../assets/img/icon01.png"
 import '../../styles/clinic.css';
 import '../../styles/Forms.css';
 
@@ -31,6 +32,16 @@ function EditClinic() {
     const [estado, setEstado] = useState("");
     const [cidade, setCidade] = useState("");
     const [endereco, setEndereco] = useState("");
+
+    const opc_bar = [
+        {
+            id: 1,
+            icon: IMG,
+            name: "Clínica",
+            url: "/owner/clinic/register",
+            style: "select"
+        }
+    ];
 
     /* LOAD DATA FROM API */
     useEffect(() => {
@@ -74,7 +85,7 @@ function EditClinic() {
 
         try {
             await apiUpdateClinic(token, id, updatedClinic);
-            alert("Dados da clínica salvos com sucesso no Supabase!");
+            alert("Dados da clínica salvos com sucesso no banco principal!");
         } catch (e) {
             console.error(e);
             alert("Falha ao salvar: " + e.message);
@@ -83,25 +94,26 @@ function EditClinic() {
         }
     }
 
-    if (loading) return <div style={{padding: '50px', textAlign: 'center'}}>Carregando os dados da nuvem...</div>;
+    if (loading) return <div style={{padding: '50px', textAlign: 'center'}}>Carregando os dados...</div>;
 
     return (
         <>
             <Section type_styles="owner" />
+            <SideBar opc={opc_bar} styles="owner" />
             
-            <main className="owner register">
+            <main className="mainBar owner register">
                 <p>
-                    <Link className="text75" to={`/owner/view-clinic/${id}`}>← Voltar para home</Link>
+                    <Link className="text75" to={`/owner/view-clinic/${id}`}>← Voltar para Visão Geral</Link>
                 </p>
 
                 <div className="camp-clinic camp-register">
                     <div>
-                        <h1>Clínica</h1>
+                        <h1 style={{margin: '0 0 0.5rem 0'}}>Atualizar Clínica</h1>
                         <p className="text75">
-                            Olá, é muito importante que você adicione todos as informações da sua clínica para melhorar a comunicação com seus pacientes.
+                            Mantenha os dados de sua clínica sempre atualizados para melhor gestão.
                         </p>
 
-                        <form onSubmit={handleSubmit}>
+                        <form onSubmit={handleSubmit} style={{marginTop: '2rem'}}>
 
                             {/* DADOS BÁSICOS */}
                             <div className="forms-section">
@@ -233,9 +245,9 @@ function EditClinic() {
                                 </div>
                             </div>
                             
-                            <div style={{ display: "flex", justifyContent: "end" }}>
+                            <div style={{ display: "flex", justifyContent: "end", marginTop: '2rem' }}>
                                 <button type="submit" className="submit" disabled={saving}>
-                                    <h1>{saving ? "Salvando..." : "Salvar"}</h1>
+                                    {saving ? "Salvando..." : "Salvar Atualizações"}
                                 </button>
                             </div>
 
@@ -243,14 +255,6 @@ function EditClinic() {
                     </div>
                 </div>
             </main>
-
-            <Footer 
-                type_styles="owner" 
-                text={`Gestão
-Eficiência
-Resultados
-Crescimento`} 
-            />
         </>
     );
 }

@@ -1,10 +1,8 @@
 /* IMPORTS OF COMPONENTS */
 import ApiClinic from "../../data/api_clinic"
-
 import Section from "../../components/section/SectionAuth"
 import ButtonH1 from "../../components/buttons/ButtonsRediTitle"
 import SideBar from "../../components/bar/SideBar"
-import Footer from "../../components/footer/FooterAuth"
 import CampNotList from "../../components/camp/NotList"
 import CampList from "../../components/camp/ListClinic"
 import IMG from "../../assets/img/icon01.png"
@@ -29,18 +27,22 @@ function ListClinic() {
             <Section type_styles="owner" />
             <SideBar opc={opc_bar} styles="owner" />
             <main className="mainBar owner">
-                <div style={{ display: "flex", justifyContent: "space-between"}}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: 'center' }}>
                     <div>
-                        <h1>Minhas Clínicas</h1>
-                        <p className="text75">Gerencie as clínicas que você têm</p>
+                        <h1 style={{margin: 0, fontSize: '28px', color: 'var(--PrimaryColorsTheme)'}}>Minhas Clínicas</h1>
+                        <p className="text75">Gerencie as clínicas cadastradas em sua conta</p>
                     </div>
-                    <ButtonH1 text={"Registrar"} url="/owner/clinic/register" />
+                    <ButtonH1 text={"Registrar Nova Clínica"} url="/owner/clinic/register" />
                 </div>
-                <div>
-                    <input placeholder="Buscar clínica por nome ou cnpj..." />
+                <div style={{marginTop: '1rem'}}>
+                    <input 
+                        type="text" 
+                        placeholder="Buscar clínica por nome ou CNPJ..." 
+                        style={{padding: '14px 16px', borderRadius: '12px', border: '1px solid var(--LineColor)', width: '100%', maxWidth: '400px'}}
+                    />
                 </div>
-                <div className="camp-clinic camp-list">
-                    <h1>Clínicas Registrados</h1>
+                <div className="camp-clinic camp-list" style={{marginTop: '1rem'}}>
+                    <h2 style={{margin: '0 0 1rem 0', fontSize: '20px'}}>Clínicas Registradas</h2>
                     {
                         ApiClinic.length === 0 ? (
                             <CampNotList
@@ -66,10 +68,6 @@ function ListClinic() {
                     }
                 </div>
             </main>
-            <Footer type_styles="mainBar owner" text={`Gestão
-                Eficiência
-                Resultados
-                Crescimento`} />
         </>
     );
 }

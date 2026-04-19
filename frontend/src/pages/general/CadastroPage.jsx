@@ -1,8 +1,6 @@
 /* IMPORTS */
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import Art from "../../components/artAuth/ArtAuthReg"
-import IMG from "../../assets/img/img_reg_owner.png"
 import '../../styles/Auth.css';
 
 /* MAIN COMPONENT */
@@ -45,111 +43,106 @@ function CadastroPage() {
     }
 
     return (
-        <>
-            <Art
-                type="owner"
-                img={IMG}
-            />
-            <div className="auth-page auth-left owner">
-                <div className="auth-card">
+        <div className="auth-wrapper owner">
+            <div className="auth-card">
 
-                    {/* HEADER */}
-                    <p className="text75">
-                        <Link to="/">← Voltar para home</Link>
-                    </p>
+                {/* HEADER */}
+                <div className="auth-header">
+                    <h1 className="auth-card-logo">BYTE DONTO</h1>
+                    <p>Comece a gerenciar a sua clínica hoje.</p>
+                </div>
 
-                    <span>
-                        Você está fazendo cadastro como PROPRIETÁRIO.
-                    </span>
+                <div className="auth-badge">NOVO PROPRIETÁRIO</div>
 
-                    {/* FORM */}
-                    <form onSubmit={handleSubmit}>
-                        <div className="field">
-                            <label htmlFor="nome">Nome completo</label>
-                            <input
-                                id="nome"
-                                name="nome"
-                                type="text"
-                                placeholder="Seu nome"
-                                value={form.nome}
-                                onChange={handleChange}
-                                required
-                            />
-                        </div>
-
-                        <div className="field">
-                            <label htmlFor="email">E-mail</label>
-                            <input
-                                id="email"
-                                name="email"
-                                type="email"
-                                placeholder="seu@email.com"
-                                value={form.email}
-                                onChange={handleChange}
-                                required
-                            />
-                        </div>
-
-                        <div className="field">
-                            <label htmlFor="password">Senha</label>
-                            <input
-                                id="password"
-                                name="password"
-                                type="password"
-                                placeholder="••••••••"
-                                value={form.password}
-                                onChange={handleChange}
-                                required
-                            />
-                        </div>
-
-                        <div className="field">
-                            <label htmlFor="confirmPassword">Confirmar senha</label>
-                            <input
-                                id="confirmPassword"
-                                name="confirmPassword"
-                                type="password"
-                                placeholder="••••••••"
-                                value={form.confirmPassword}
-                                onChange={handleChange}
-                                required
-                            />
-                        </div>
-
-                        {error && <p className="auth-error">{error}</p>}
-                        {success && (
-                            <p style={{
-                                color: "#2e7d32",
-                                fontSize: "12px",
-                                textAlign: "center",
-                                padding: "8px 12px",
-                                backgroundColor: "#e8f5e9",
-                                borderRadius: "8px"
-                            }}>
-                                {success}
-                            </p>
-                        )}
-
-                        <button
-                            type="submit"
-                            className="auth-submit"
-                            disabled={loading}
-                        >
-                            <h1>{loading ? "ENTRANDO..." : "FAZER CADASTRO"}</h1>
-                        </button>
-                    </form>
-
-                    {/* FOOTER */}
-                    <div className="auth-footer">
-                        <p className="text75">
-                            Já têm registro?{" "}
-                            <Link to="/login">VAMOS LOGAR</Link>
-                        </p>
+                {/* FORM */}
+                <form onSubmit={handleSubmit} className="auth-form">
+                    <div className="field">
+                        <label htmlFor="nome">Nome Completo</label>
+                        <input
+                            id="nome"
+                            name="nome"
+                            type="text"
+                            placeholder="Dr. Nome Sobrenome"
+                            value={form.nome}
+                            onChange={handleChange}
+                            required
+                        />
                     </div>
 
+                    <div className="field">
+                        <label htmlFor="email">E-mail Corporativo</label>
+                        <input
+                            id="email"
+                            name="email"
+                            type="email"
+                            placeholder="clinica@email.com"
+                            value={form.email}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+
+                    <div className="field">
+                        <label htmlFor="password">Criar Senha</label>
+                        <input
+                            id="password"
+                            name="password"
+                            type="password"
+                            placeholder="Mínimo de 8 caracteres"
+                            value={form.password}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+
+                    <div className="field">
+                        <label htmlFor="confirmPassword">Confirmar Senha</label>
+                        <input
+                            id="confirmPassword"
+                            name="confirmPassword"
+                            type="password"
+                            placeholder="Repita a senha"
+                            value={form.confirmPassword}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+
+                    {error && <p className="auth-error">{error}</p>}
+                    {success && (
+                        <p style={{
+                            color: "#2e7d32",
+                            fontSize: "13px",
+                            textAlign: "center",
+                            padding: "10px",
+                            backgroundColor: "#e8f5e9",
+                            borderRadius: "8px",
+                            border: "1px solid #b7dfBA",
+                            fontWeight: "500"
+                        }}>
+                            {success}
+                        </p>
+                    )}
+
+                    <button
+                        type="submit"
+                        className="auth-submit"
+                        disabled={loading}
+                    >
+                        {loading ? "CADASTRANDO..." : "CRIAR CONTA AGORA"}
+                    </button>
+                </form>
+
+                {/* FOOTER */}
+                <div className="auth-footer">
+                    <p className="text75">
+                        Já tem uma conta?{" "}
+                        <Link to="/login">Fazer login</Link>
+                    </p>
+                    <p style={{marginTop: "8px"}}><Link to="/">← Voltar p/ o início</Link></p>
                 </div>
             </div>
-        </>
+        </div>
     );
 }
 

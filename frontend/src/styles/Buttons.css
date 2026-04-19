@@ -3,69 +3,105 @@ button {
     border-radius: 12px;
     border: 0px;
     cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    font-family: var(--font-primary, 'Inter', sans-serif);
 }
 
 button.camp,
 form button.submit {
     background-color: var(--PrimaryColors);
+    color: var(--ThemeColor);
+    box-shadow: 0 4px 14px 0 rgba(37, 99, 235, 0.39);
 }
 
 button.camp h1,
 button.camp p,
-form button.submit {
+form button.submit,
+form button.submit h1 {
     color: var(--ThemeColor);
+    margin: 0;
+    font-size: 14px;
+    font-family: var(--font-primary);
 }
 
 button.camp:hover,
 form button.submit:hover {
     background-color: var(--PrimaryColorsTheme);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+    transform: translateY(-1px);
 }
 
 button.camp.not {
     background-color: var(--NotPrimaryColors);
+    box-shadow: 0 4px 14px 0 rgba(239, 68, 68, 0.39);
 }
 
 button.camp.not:hover {
     background-color: var(--NotPrimaryColorsTheme);
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
 }
 
 button.redi {
-    border: 2px solid var(--PrimaryColors);
-    background-color: transparent;
-    width: 40%;
+    background-color: var(--PrimaryColors);
+    color: var(--ThemeColor);
+    border: none;
+    box-shadow: 0 4px 14px 0 rgba(37, 99, 235, 0.39);
+    min-width: 180px;
 }
 
 button.redi:hover {
-    background-color: var(--PrimaryColors);
+    background-color: var(--PrimaryColorsTheme);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+    transform: translateY(-1px);
 }
 
-button.redi:hover h1 {
+button.redi h1 {
     color: var(--ThemeColor);
+    font-size: 16px;
+    margin: 0;
+    font-weight: 600;
 }
 
 button.bar {
     display: flex;
     align-items: center;
-    gap: 0.5em;
-    padding: 0.5em 1em;
+    gap: 1rem;
+    padding: 12px 16px;
     width: 100%;
     background-color: transparent;
+    border-radius: 12px;
+    color: var(--TextColor75);
+    transition: all 0.2s;
+    font-family: var(--font-primary);
 }
 
 button.bar:hover {
-    background-color: var(--PrimaryColorsBack);
+    background-color: rgba(37, 99, 235, 0.05); /* very soft blue */
+    color: var(--PrimaryColors);
+    transform: translateX(4px);
 }
 
 button.bar.select {
-    background-color: var(--PrimaryColors);
+    background-color: var(--PrimaryColorsBack);
+    color: var(--PrimaryColorsTheme);
+    box-shadow: inset 4px 0 0 var(--PrimaryColors);
 }
 
-button.bar img{
-    width: 2em;
+button.bar img {
+    width: 20px;
+    opacity: 0.7;
+    transition: all 0.2s;
+}
+
+button.bar.select img {
+    opacity: 1;
 }
 
 button.bar p {
-    margin-top: 0.25em;
-    color: var(--PrimaryColorsTheme);
-    font-family: "Amiko-Bold";
+    margin: 0;
+    font-weight: 600;
+    font-size: 14px;
+    color: inherit;
 }

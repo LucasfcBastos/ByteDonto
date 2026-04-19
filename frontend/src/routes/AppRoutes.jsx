@@ -13,7 +13,14 @@ import RegisterClinic from "../pages/owner/RegisterClinic";
 import EditClinic from "../pages/owner/EditClinic";
 import BindClinic from "../pages/owner/BindClinic";
 
-import DashboardPage from "../pages/dashboard/DashboardPage";
+import SpecialistDashboard from "../pages/specialist/Dashboard";
+import SpecialistListPatients from "../pages/specialist/ListPatients";
+import SpecialistViewRecord from "../pages/specialist/ViewRecord";
+
+import ReceptionDashboard from "../pages/reception/Dashboard";
+import RegisterPatient from "../pages/reception/RegisterPatient";
+import ListPatients from "../pages/reception/ListPatients";
+import ViewPatient from "../pages/reception/ViewPatient";
 
 /* PRIVATE ROUTE — redireciona para login se não autenticado */
 function PrivateRoute({ children }) {
@@ -34,19 +41,24 @@ export function AppRoutes() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/cadastro" element={<CadastroPage />} />
 
-          {/* ROTAS QUE VÃO SER PRIVADAS E SÓ ENTRA AUTHNTICADO COM TOKEN */}
-          <Route path="/owner/clinic" element={<ListClinic />} />
-          <Route path="/owner/clinic/register" element={<RegisterClinic />} />
-          <Route path="/owner/view-clinic/:id" element={<ViewClinic />} />
-          <Route path="/owner/edit-clinic/:id" element={<EditClinic />} />
-          <Route path="/owner/bind-clinic/:id" element={<BindClinic />} />
+          {/* ROTA DO PROPRIETÁRIO */}
+          <Route path="/owner/clinic" element={<PrivateRoute><ListClinic /></PrivateRoute>} />
+          <Route path="/owner/clinic/register" element={<PrivateRoute><RegisterClinic /></PrivateRoute>} />
+          <Route path="/owner/view-clinic/:id" element={<PrivateRoute><ViewClinic /></PrivateRoute>} />
+          <Route path="/owner/edit-clinic/:id" element={<PrivateRoute><EditClinic /></PrivateRoute>} />
+          <Route path="/owner/bind-clinic/:id" element={<PrivateRoute><BindClinic /></PrivateRoute>} />
 
-          {/* Private routes */}
-          <Route path="/dashboard" element={
-            <PrivateRoute>
-              <DashboardPage />
-            </PrivateRoute>
-          } />
+          {/* ROTA DO ESPECIALISTA (DENTISTA) */}
+          <Route path="/specialist/dashboard" element={<PrivateRoute><SpecialistDashboard /></PrivateRoute>} />
+          <Route path="/specialist/patients" element={<PrivateRoute><SpecialistListPatients /></PrivateRoute>} />
+          <Route path="/specialist/records" element={<PrivateRoute><SpecialistListPatients /></PrivateRoute>} />
+          <Route path="/specialist/patient/view" element={<PrivateRoute><SpecialistViewRecord /></PrivateRoute>} />
+
+          {/* ROTA DA RECEPÇÃO */}
+          <Route path="/reception/dashboard" element={<PrivateRoute><ReceptionDashboard /></PrivateRoute>} />
+          <Route path="/reception/patient/register" element={<PrivateRoute><RegisterPatient /></PrivateRoute>} />
+          <Route path="/reception/patients" element={<PrivateRoute><ListPatients /></PrivateRoute>} />
+          <Route path="/reception/patient/view" element={<PrivateRoute><ViewPatient /></PrivateRoute>} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>

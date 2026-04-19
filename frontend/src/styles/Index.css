@@ -1,74 +1,89 @@
 /* IMPORTING FONTS */
-@font-face {
-    font-family: "Amiko-Bold";
-    src: url("../assets/font/Amiko-Bold.ttf") format("truetype");
-}
-@font-face {
-    font-family: "Amiko-Regular";
-    src: url("../assets/font/Amiko-Regular.ttf") format("truetype");
-}
-@font-face {
-    font-family: "Amiko-SemiBold";
-    src: url("../assets/font/Amiko-SemiBold.ttf") format("truetype");
-}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&family=JetBrains+Mono:wght@500&display=swap');
 
 /* GLOBAL VARIABLES */
 :root {
     --SpanText: 31px;
-    --H1Text: 20px;
-    --PText: 14px;
-    --LabelText: 10px;
+    --H1Text: 64px;
+    --H2Text: 32px;
+    --PText: 16px;
+    --LabelText: 11px;
+    --DataMonoText: 13px;
 
     --ThemeColor: #FFFFFF;
-    --BackColor: #F7F7F7;
-    --TextColor: #000000;
-    --TextColor75: #000000bf;
-    --LineColor: #999999;
+    --BackColor: #F8FAFC;
+    --TextColor: #0F172A;
+    --TextColor75: #475569;
+    --LineColor: #E2E8F0;
 
-    --PrimaryColors: #458EE5;
-    --PrimaryColorsTheme: #143966;
-    --PrimaryColorsBack: #BED4EE;
+    --PrimaryColors: #2563EB; /* Especialista */
+    --PrimaryColorsTheme: #1D4ED8;
+    --PrimaryColorsBack: #EFF6FF;
 
-    --NotPrimaryColors: #C22626;
-    --NotPrimaryColorsTheme: #661414;
+    --NotPrimaryColors: #EF4444;
+    --NotPrimaryColorsTheme: #DC2626;
+
+    --font-primary: 'Inter', sans-serif;
+    --font-secondary: 'JetBrains Mono', monospace;
+
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 }
 
 .owner {
-    --PrimaryColors: #C29926;
-    --PrimaryColorsTheme: #664C14;
-    --PrimaryColorsBack: #E5D9B8;
+    --PrimaryColors: #B8860B;
+    --PrimaryColorsTheme: #946B09;
+    --PrimaryColorsBack: #FEFCE8;
+}
+
+.reception {
+    --PrimaryColors: #16A34A;
+    --PrimaryColorsTheme: #15803D;
+    --PrimaryColorsBack: #F0FDF4;
 }
 
 /* BODY STYLING */
 body {
-    background-color: var(--ColorTheme);
-    font-family: "Amiko-Regular";
+    background-color: var(--BackColor);
+    color: var(--TextColor);
+    font-family: var(--font-primary);
     margin: 0;
-    background-color: var(--ThemeColor);
+    -webkit-font-smoothing: antialiased;
 }
 
-/* TEXT STYLING */
-span {
-    font-size: var(--SpanText);
-    font-family: "Amiko-Bold";
-}
-
-h1 {
+/* TEXT STYLING BASED ON SPEC */
+h1.display {
     font-size: var(--H1Text);
-    font-family: "Amiko-SemiBold";
+    font-weight: 800; /* Extrabold */
+    letter-spacing: -0.025em;
     margin: 0;
+    line-height: 1.1;
 }
 
-p,
-a {
-    font-size: var(--PText);
+h2.section {
+    font-size: var(--H2Text);
+    font-weight: 700; /* Bold */
+    letter-spacing: -0.01em;
     margin: 0;
+    line-height: 1.2;
 }
 
-label {
+label.ui-label {
     font-size: var(--LabelText);
+    font-weight: 900; /* Black */
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
 }
 
-.text75 {
-    color: var(--TextColor75)
+span.data-mono, .data-mono {
+    font-family: var(--font-secondary);
+    font-size: var(--DataMonoText);
+    font-weight: 500;
 }
+
+/* Reset old styles for backward compatibility */
+h1 { font-family: var(--font-primary); font-size: var(--H2Text); font-weight: 700; margin: 0; }
+span { font-size: var(--SpanText); font-weight: 700; }
+p, a { font-size: var(--PText); font-weight: 400; margin: 0; line-height: 1.6; }
+
+.text75 { color: var(--TextColor75); }

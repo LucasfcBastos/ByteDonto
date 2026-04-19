@@ -1,80 +1,108 @@
+/* MODERN SEC-TITLE */
 form .sec-title {
-    margin: 1em 0em;
+    margin: 2em 0 1em 0;
+    font-family: var(--font-primary);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--PrimaryColorsTheme);
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid rgba(226, 232, 240, 0.6);
+}
+
+form .forms-section:first-child .sec-title {
+    margin-top: 1em;
 }
 
 form .flex-inpus {
     display: flex;
-    gap: 1.5em;
+    gap: 1.5rem;
 }
 
-form .flex-inpus .field {
+form .field {
     flex: 1;
     display: flex;
     flex-direction: column;
+    margin-bottom: 1.5rem;
 }
 
+/* MODERN LABELS */
 form label {
+    font-family: var(--font-primary);
+    font-size: 13px;
+    font-weight: 600;
     color: var(--TextColor);
-    text-transform: uppercase;
-    position: absolute;
-    padding: 0 5px;
-    background: white;
-    transform: translate(1em, -50%);
+    margin-bottom: 0.5rem;
+    margin-left: 2px;
 }
 
+/* MODERN INPUTS / SELECTS / TEXTAREAS */
 form input,
-form select {
-    padding: 10px 14px;
+form select,
+form textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px 16px;
     border-radius: 12px;
-    border: 1.5px solid var(--LineColor);
-    font-family: "Amiko-Regular";
-    background-color: var(--BackColor);
+    border: 1px solid var(--LineColor);
+    font-family: var(--font-primary);
+    background-color: rgba(255, 255, 255, 0.7);
     color: var(--TextColor);
-    margin-bottom: 1.5em;
+    transition: all 0.2s ease;
+    font-size: 14px;
+    outline: none;
+}
+
+form input:focus,
+form select:focus,
+form textarea:focus {
+    border-color: var(--PrimaryColors);
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
 }
 
 form textarea {
-    padding: 10px 14px;
-    border-radius: 12px;
-    border: 1.5px solid var(--LineColor);
-    font-family: "Amiko-Regular";
-    background-color: var(--BackColor);
-    color: var(--TextColor);
-    margin-bottom: 1.5em;
     resize: vertical;
-    min-height: 3.8em;
+    min-height: 5em;
     max-height: 15.3em;
 }
 
+/* HOVER FORMS (MODALS) */
 .forms-hover {
     width: 100%;
-    height: calc(100dvh - 5em);
+    height: 100vh;
     position: fixed;
-    background-color: rgba(0, 0, 0, 0.500);
-    justify-items: center;
-    align-content: center;
-    display: block;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
 }
 
 .forms-hover .forms-card {
-    padding: 1.5em 1em 1em 1em;
+    padding: 2em;
     background-color: white;
-    border-radius: 12px;
+    border-radius: 16px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    max-width: 500px;
 }
 
 .forms-hover .forms-card input {
-    width: 25em;
+    width: 100%;
 }
 
 @media (max-width: 765px) {
     form .forms-section {
         display: flex;
         flex-direction: column;
-        gap: 0.5em;
     }
 
     form .flex-inpus {
         flex-direction: column;
-        gap: 0.5em;
+        gap: 0;
     }
 }
