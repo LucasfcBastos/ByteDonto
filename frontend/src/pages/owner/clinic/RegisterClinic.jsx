@@ -58,16 +58,18 @@ function RegisterClinic() {
         setLoading(true);
 
         const newClinic = {
-            nome: name_clinic,
-            nome_fantasia: name_clinic,
+            name: name_clinic,
+            company_name: razao_social,
             cnpj: CNPJ,
-            telefone: telefone,
-            endereco: {
-                logradouro: esdereco,
-                cidade: cidade,
-                estado: estado,
-                pais: pais,
-            },
+            phone_number: telefone,
+            whatsapp: whatsapp,
+            instagram: instagram,
+            facebook: facebook,
+            summary: resumo,
+            address: esdereco,
+            city: cidade,
+            states: estado,
+            country: pais,
         };
 
         try {
@@ -124,6 +126,7 @@ function RegisterClinic() {
                         onClose={() =>
                             setShowError(false)
                         }
+                        styles="owner"
                     />
 
                 )

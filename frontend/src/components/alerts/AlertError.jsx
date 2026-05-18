@@ -9,7 +9,7 @@ function AlertError({
     return (
         <AlertOverlay styles={styles}>
 
-            <div className="alert-content">
+            <div className="alert-content" style={{ display: "flex", flexDirection: "column", gap: "1.5em" }}>
 
                 <h2 className="alert-title error">
                     ERROR

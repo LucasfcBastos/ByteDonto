@@ -7,31 +7,68 @@ import FinancialIcon from "../assets/svg/financial.svg?react";
 import PatientIcon from "../assets/svg/patient.svg?react";
 
 const OWNER_ITEMS = [
-    { id: "clinic",    icon: ClinicIcon,    name: "Clínica",    url: "/owner/clinic" },
-    { id: "team",      icon: TeamIcon,      name: "Equipe",     url: "/owner/team" },
-    { id: "patients",  icon: PatientIcon,   name: "Pacientes",  url: "/owner/pacients" },
-    { id: "financial", icon: FinancialIcon, name: "Financeiro", url: "/owner/financial" },
+    {
+        id: "clinic",
+        icon: ClinicIcon,
+        name: "Clínica",
+        url: "/owner/clinic"
+    },
+
+    {
+        id: "team",
+        icon: TeamIcon,
+        name: "Equipe",
+        url: "/owner/team"
+    },
+
+    {
+        id: "patients",
+        icon: PatientIcon,
+        name: "Pacientes",
+        url: "/owner/pacients"
+    },
+
+    {
+        id: "financial",
+        icon: FinancialIcon,
+        name: "Financeiro",
+        url: "/owner/financial"
+    },
 ];
 
 const OWNER_ONLY_CLINIC = [
-    { id: "clinic", icon: ClinicIcon, name: "Clínica", url: "/owner/clinic" },
+    {
+        id: "clinic",
+        icon: ClinicIcon,
+        name: "Clínica",
+        url: "/owner/clinic"
+    },
 ];
 
 function item(id, name, url) {
-    return { id, icon: ClinicIcon, name, url };
+    return {
+        id,
+        icon: ClinicIcon,
+        name,
+        url
+    };
 }
 
 function withSelect(items, activeId) {
     return items.map(i => ({
         ...i,
-        icon: i.icon,
-        style: i.id === activeId ? "select" : ""
+        style: i.id === activeId
+            ? "select"
+            : ""
     }));
 }
 
 export function useOwnerSidebar(activeId) {
+
     const { user } = useAuth();
-    const possuiClinica = !!user?.perfil?.clinica_id;
+
+    const possuiClinica =
+        user?.perfil?.has_clinic === true;
 
     const items = possuiClinica
         ? OWNER_ITEMS
@@ -41,12 +78,13 @@ export function useOwnerSidebar(activeId) {
 }
 
 export function useSpecialistSidebar(activeId) {
+
     const { user } = useAuth();
 
     const verAgenda = usePermissao("ver_agenda");
+
     const verPacientes = usePermissao("ver_pacientes");
 
-    // Dono visitando páginas de especialista mantém sidebar completo
     if (user?.perfil?.papel === "Dono") {
         return withSelect(OWNER_ITEMS, activeId);
     }
@@ -77,13 +115,16 @@ export function useSpecialistSidebar(activeId) {
 }
 
 export function useReceptionSidebar(activeId) {
+
     const { user } = useAuth();
 
     const verAgenda = usePermissao("ver_agenda");
-    const verPacientes = usePermissao("ver_pacientes");
-    const verFinanceiro = usePermissao("ver_financeiro");
 
-    // Dono visitando páginas de recepção mantém sidebar completo
+    const verPacientes = usePermissao("ver_pacientes");
+
+    const verFinanceiro =
+        usePermissao("ver_financeiro");
+
     if (user?.perfil?.papel === "Dono") {
         return withSelect(OWNER_ITEMS, activeId);
     }
@@ -91,6 +132,7 @@ export function useReceptionSidebar(activeId) {
     const items = [];
 
     if (verAgenda) {
+
         items.push(
             item(
                 "dashboard",
@@ -98,9 +140,11 @@ export function useReceptionSidebar(activeId) {
                 "/employee/dashboard"
             )
         );
+
     }
 
     if (verPacientes) {
+
         items.push(
             item(
                 "patients",
@@ -108,9 +152,11 @@ export function useReceptionSidebar(activeId) {
                 "/employee/patients"
             )
         );
+
     }
 
     if (verFinanceiro) {
+
         items.push(
             item(
                 "financial",
@@ -118,6 +164,7 @@ export function useReceptionSidebar(activeId) {
                 "/employee/financial"
             )
         );
+
     }
 
     return withSelect(items, activeId);

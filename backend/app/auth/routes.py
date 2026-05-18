@@ -178,10 +178,6 @@ def logout():
 
 @auth_bp.route("/me", methods=["GET"])
 def me():
-    """
-    Retorna dados do usuário autenticado.
-    Header: Authorization: Bearer <token>
-    """
     token = request.headers.get("Authorization", "").replace("Bearer ", "")
 
     if not token:
@@ -191,14 +187,43 @@ def me():
         user_response = supabase.auth.get_user(token)
         user = user_response.user
 
-        perfil_response = supabase.table("users").select("*").eq("id", user.id).execute()
-        perfil_data = perfil_response.data[0] if perfil_response.data else None
+        perfil_response = (
+            supabase
+            .table("users")
+            .select("*")
+            .eq("id", user.id)
+            .execute()
+        )
+
+        perfil_data = (
+            perfil_response.data[0]
+            if perfil_response.data
+            else None
+        )
+
+        # Busca clínicas do owner
+        clinics_response = (
+            supabase
+            .table("clinics")
+            .select("id")
+            .eq("owner_id", user.id)
+            .execute()
+        )
+
+        clinicas = clinics_response.data or []
 
         return jsonify({
             "id": user.id,
             "email": user.email,
-            "perfil": perfil_data
+            "perfil": {
+                **perfil_data,
+                "has_clinic": len(clinicas) > 0,
+                "clinicas": clinicas
+            }
         }), 200
 
     except Exception as e:
-        return jsonify({"error": "Token inválido", "detail": str(e)}), 401
+        return jsonify({
+            "error": "Token inválido",
+            "detail": str(e)
+        }), 401

@@ -2,6 +2,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "../context/AuthContext";
 import ScrollToTop from "./ScrollToTop";
+import OwnerClinicGuard from "./OwnerClinicGuard";
 
 import LandingPage from "../pages/general/LandingPage";
 import LoginPage from "../pages/general/LoginPage";
@@ -71,17 +72,17 @@ export function AppRoutes() {
           {/* ROTAS DO PROPRIETÁRIO */}
           <Route path="/owner/clinic" element={<PrivateRoute allowedRoles={["Owner"]}><OwnerListClinic /></PrivateRoute>} />
           <Route path="/owner/clinic/register" element={<PrivateRoute allowedRoles={["Owner"]}><OwnerRegisterClinic /></PrivateRoute>} />
-          <Route path="/owner/view-clinic/:id" element={<PrivateRoute allowedRoles={["Owner"]}><OwnerViewClinic /></PrivateRoute>} />
-          <Route path="/owner/edit-clinic/:id" element={<PrivateRoute allowedRoles={["Owner"]}><OwnerEditClinic /></PrivateRoute>} />
+          <Route path="/owner/view-clinic/:id" element={<PrivateRoute allowedRoles={["Owner"]}><OwnerClinicGuard><OwnerViewClinic /></OwnerClinicGuard></PrivateRoute>} />
+          <Route path="/owner/edit-clinic/:id" element={<PrivateRoute allowedRoles={["Owner"]}><OwnerClinicGuard><OwnerEditClinic /></OwnerClinicGuard></PrivateRoute>} />
 
-          <Route path="/owner/team" element={<PrivateRoute allowedRoles={["Owner"]}><OwnerTeamClinic /></PrivateRoute>} />
-          <Route path="/owner/team/:id_clinic" element={<PrivateRoute allowedRoles={["Owner"]}><OwnerListTeam /></PrivateRoute>} />
+          <Route path="/owner/team" element={<PrivateRoute allowedRoles={["Owner"]}><OwnerClinicGuard><OwnerTeamClinic /></OwnerClinicGuard></PrivateRoute>} />
+          <Route path="/owner/team/:id_clinic" element={<PrivateRoute allowedRoles={["Owner"]}><OwnerClinicGuard><OwnerListTeam /></OwnerClinicGuard></PrivateRoute>} />
 
-          <Route path="/owner/pacients" element={<PrivateRoute allowedRoles={["Owner"]}><OwnerPacientClinic /></PrivateRoute>} />
-          <Route path="/owner/pacients/:id_clinic" element={<PrivateRoute allowedRoles={["Owner"]}><OwnerListPacient /></PrivateRoute>} />
-          <Route path="/owner/pacients/:id_clinic/register" element={<PrivateRoute allowedRoles={["Owner"]}><OwnerRegisterPacient /></PrivateRoute>} />
+          <Route path="/owner/pacients" element={<PrivateRoute allowedRoles={["Owner"]}><OwnerClinicGuard><OwnerPacientClinic /></OwnerClinicGuard></PrivateRoute>} />
+          <Route path="/owner/pacients/:id_clinic" element={<PrivateRoute allowedRoles={["Owner"]}><OwnerClinicGuard><OwnerListPacient /></OwnerClinicGuard></PrivateRoute>} />
+          <Route path="/owner/pacients/:id_clinic/register" element={<PrivateRoute allowedRoles={["Owner"]}><OwnerClinicGuard><OwnerRegisterPacient /></OwnerClinicGuard></PrivateRoute>} />
 
-          <Route path="/owner/financial" element={<PrivateRoute allowedRoles={["Owner"]}><OwnerFinancial role="owner" /></PrivateRoute>} />
+          <Route path="/owner/financial" element={<PrivateRoute allowedRoles={["Owner"]}><OwnerClinicGuard><OwnerFinancial role="owner" /></OwnerClinicGuard></PrivateRoute>} />
 
           {/* ROTAS DO ESPECIALISTA (DENTISTA) */}
           <Route path="/specialist/dashboard" element={<PrivateRoute allowedRoles={["Specialist"]}><SpecialistDashboard /></PrivateRoute>} />
