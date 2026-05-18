@@ -161,73 +161,65 @@ export async function apiUpdateClinic(token, clinicaId, clinicData) {
 }
 
 /* --- EQUIPE / USUÁRIOS --- */
-export async function apiGetEquipe(token) {
-    const res = await fetch(`${API_URL}/api/usuarios/`, {
-        headers: { Authorization: `Bearer ${token}` },
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || "Erro ao buscar equipe");
+export async function apiGetEquipe(token, id_clinic) {
+    const response = await fetch(
+        `${API_URL}/api/usuarios/${id_clinic}`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    );
+    const data = await response.json();
+    if (!response.ok) {
+        throw new Error(data.error);
+    }
     return data;
 }
 
-export async function apiCriarMembro(token, membroData) {
-    const res = await fetch(`${API_URL}/api/usuarios/criar`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(membroData),
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || "Erro ao criar membro");
+export async function apiCriarMembro(
+    token,
+    id_clinic,
+    body
+) {
+    const response = await fetch(
+        `${API_URL}/api/usuarios/${id_clinic}/criar`,
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify(body)
+        }
+    );
+    const data = await response.json();
+    if (!response.ok) {
+        throw new Error(data.error);
+    }
     return data;
 }
 
-export async function apiRemoverMembro(token, usuarioId) {
-    const res = await fetch(`${API_URL}/api/usuarios/${usuarioId}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || "Erro ao remover membro");
-    return data;
-}
+export async function apiRemoverMembro(
+    token,
+    id_clinic,
+    user_id
+) {
+    const response = await fetch(
+        `${API_URL}/api/usuarios/${id_clinic}/${user_id}`,
+        {
+            method: "DELETE",
 
-export async function apiAtualizarMembro(token, usuarioId, dadosAtualizados) {
-    const res = await fetch(`${API_URL}/api/usuarios/${usuarioId}`, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(dadosAtualizados),
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || "Erro ao atualizar membro");
-    return data;
-}
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    );
+    const data = await response.json();
 
-export async function apiGetPermissoes(token, usuarioId) {
-    const res = await fetch(`${API_URL}/api/usuarios/${usuarioId}/permissoes`, {
-        headers: { Authorization: `Bearer ${token}` },
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || "Erro ao buscar permissões");
-    return data;
-}
-
-export async function apiAtualizarPermissoes(token, usuarioId, permissoes) {
-    const res = await fetch(`${API_URL}/api/usuarios/${usuarioId}/permissoes`, {
-        method: "PATCH",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ permissoes }),
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || "Erro ao atualizar permissões");
+    if (!response.ok) {
+        throw new Error(data.error);
+    }
     return data;
 }
 

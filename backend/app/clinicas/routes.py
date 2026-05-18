@@ -94,50 +94,114 @@ def get_clinica(clinica_id):
 
 @clinicas_bp.route("/<clinica_id>", methods=["DELETE"])
 def deletar_clinica(clinica_id):
+
     token = get_token(request)
+
     if not token:
-        return jsonify({"error": "Não autorizado"}), 401
+        return jsonify({
+            "error": "Não autorizado"
+        }), 401
 
     try:
-        _, user_clinica_id = get_user_clinica(token)
 
-        if clinica_id != user_clinica_id:
-            return jsonify({"error": "Acesso não autorizado a esta clínica"}), 403
+        user_response = supabase.auth.get_user(token)
 
-        # Remove vínculos na tabela teams antes de deletar a clínica
-        supabase.table("teams").delete().eq("clinic_id", clinica_id).execute()
+        user_id = user_response.user.id
 
-        supabase.table("clinics").delete().eq("id", clinica_id).execute()
+        # Verifica se a clínica pertence ao usuário
+        clinica = (
+            supabase
+            .table("clinics")
+            .select("id")
+            .eq("id", clinica_id)
+            .eq("owner_id", user_id)
+            .single()
+            .execute()
+        )
 
-        return jsonify({"message": "Clínica removida com sucesso"}), 200
+        if not clinica.data:
+
+            return jsonify({
+                "error": "Acesso não autorizado a esta clínica"
+            }), 403
+
+        # Remove vínculos
+        supabase \
+            .table("teams") \
+            .delete() \
+            .eq("clinic_id", clinica_id) \
+            .execute()
+
+        # Remove clínica
+        supabase \
+            .table("clinics") \
+            .delete() \
+            .eq("id", clinica_id) \
+            .execute()
+
+        return jsonify({
+            "message": "Clínica removida com sucesso"
+        }), 200
+
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+
+        return jsonify({
+            "error": str(e)
+        }), 500
 
 
 @clinicas_bp.route("/<clinica_id>", methods=["PUT"])
 def atualizar_clinica(clinica_id):
+
     token = get_token(request)
+
     if not token:
-        return jsonify({"error": "Não autorizado"}), 401
+        return jsonify({
+            "error": "Não autorizado"
+        }), 401
 
     try:
-        _, user_clinica_id = get_user_clinica(token)
 
-        if clinica_id != user_clinica_id:
-            return jsonify({"error": "Acesso não autorizado a esta clínica"}), 403
+        user_response = supabase.auth.get_user(token)
+
+        user_id = user_response.user.id
+
+        clinica = (
+            supabase
+            .table("clinics")
+            .select("id")
+            .eq("id", clinica_id)
+            .eq("owner_id", user_id)
+            .single()
+            .execute()
+        )
+
+        if not clinica.data:
+
+            return jsonify({
+                "error": "Acesso não autorizado a esta clínica"
+            }), 403
 
         data = request.get_json()
-        payload = {k: v for k, v in data.items() if k in CAMPOS_CLINICA}
 
-        if not payload:
-            return jsonify({"error": "Nenhum campo válido para atualizar"}), 400
+        payload = {
+            k: v
+            for k, v in data.items()
+            if k in CAMPOS_CLINICA
+        }
 
         result = (
-            supabase.table("clinics")
+            supabase
+            .table("clinics")
             .update(payload)
             .eq("id", clinica_id)
             .execute()
         )
-        return jsonify(result.data[0] if result.data else {}), 200
+
+        return jsonify(result.data[0]), 200
+
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+
+        return jsonify({
+            "error": str(e)
+        }), 500

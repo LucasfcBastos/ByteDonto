@@ -86,7 +86,7 @@ function ViewClinic() {
                             <Card title="Nº de Atendimentos Ativos" date="0" />
                         </div>
                         <div style={{ width: "100%", display: "flex", justifyContent: "flex-end", marginTop: "2rem" }}>
-                            <ButtonP text={"Gerenciar Equipe"} url={`/owner/bind-clinic/${id}`} />
+                            <ButtonP text={"Gerenciar Equipe"} url={`/owner/team/${id}`} />
                         </div>
                     </div>
                 </div>
