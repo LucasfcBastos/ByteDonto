@@ -18,6 +18,7 @@ def create_app():
     from app.dashboard.routes import dashboard_bp
     from app.planos.routes import planos_bp
     from app.imagens.routes import imagens_bp
+    from app.procedimentos.routes import procedimentos_bp
 
     app.register_blueprint(auth_bp, url_prefix="/api/auth")
     app.register_blueprint(pacientes_bp, url_prefix="/api/pacientes")
@@ -28,6 +29,7 @@ def create_app():
     app.register_blueprint(dashboard_bp, url_prefix="/api/dashboard")
     app.register_blueprint(planos_bp, url_prefix="/api/planos")
     app.register_blueprint(imagens_bp, url_prefix="/api/imagens")
+    app.register_blueprint(procedimentos_bp, url_prefix="/api/procedimentos")
 
     @app.route("/api/health")
     def health():

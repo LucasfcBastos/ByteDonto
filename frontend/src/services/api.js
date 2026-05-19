@@ -311,9 +311,86 @@ export async function apiDeletarImagem(token, imagemId) {
     return data;
 }
 
+/* --- PROCEDIMENTOS --- */
+export async function apiGetProcedimentos(token, clinicId) {
+    const url = clinicId
+        ? `${API_URL}/api/procedimentos/?clinic_id=${clinicId}`
+        : `${API_URL}/api/procedimentos/`;
+    const res = await fetch(url, {
+        headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Erro ao buscar procedimentos");
+    return data;
+}
+
+export async function apiGetProcedimento(token, procedimentoId) {
+    const res = await fetch(`${API_URL}/api/procedimentos/${procedimentoId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Erro ao buscar procedimento");
+    return data;
+}
+
+export async function apiCriarProcedimento(token, procedimentoData) {
+    const res = await fetch(`${API_URL}/api/procedimentos/`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(procedimentoData),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Erro ao criar procedimento");
+    return data;
+}
+
+export async function apiAtualizarProcedimento(token, procedimentoId, procedimentoData) {
+    const res = await fetch(`${API_URL}/api/procedimentos/${procedimentoId}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(procedimentoData),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Erro ao atualizar procedimento");
+    return data;
+}
+
+export async function apiDeletarProcedimento(token, procedimentoId) {
+    const res = await fetch(`${API_URL}/api/procedimentos/${procedimentoId}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Erro ao remover procedimento");
+    return data;
+}
+
+export async function apiAlterarStatusProcedimento(token, procedimentoId, status) {
+    const res = await fetch(`${API_URL}/api/procedimentos/${procedimentoId}/status`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ status }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Erro ao alterar status do procedimento");
+    return data;
+}
+
 /* --- DASHBOARD MÉTRICAS --- */
-export async function apiGetMetricas(token) {
-    const res = await fetch(`${API_URL}/api/dashboard/metricas`, {
+export async function apiGetMetricas(token, clinicId = null) {
+    const url = clinicId
+        ? `${API_URL}/api/dashboard/metricas?clinic_id=${clinicId}`
+        : `${API_URL}/api/dashboard/metricas`;
+    const res = await fetch(url, {
         headers: { Authorization: `Bearer ${token}` },
     });
     const data = await res.json();

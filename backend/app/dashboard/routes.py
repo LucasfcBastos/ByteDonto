@@ -13,10 +13,12 @@ def metricas():
         return jsonify({"error": "Não autorizado"}), 401
 
     try:
-        _, clinic_id = get_user_clinica(token)
+        _, default_clinic_id = get_user_clinica(token)
+
+        # Permite filtrar por clínica específica via query param
+        clinic_id = request.args.get("clinic_id") or default_clinic_id
 
         hoje = date.today().isoformat()
-        primeiro_dia_mes = date.today().replace(day=1).isoformat()
 
         # Total de pacientes
         pacientes = (
@@ -38,25 +40,38 @@ def metricas():
         )
         consultas_hoje = len(consultas_hoje_res.data)
 
-        # Total de especialistas via teams + users
-        team_members = supabase.table("teams").select("user_id").eq("clinic_id", clinic_id).execute()
+        # Membros da clínica via teams + users
+        team_members = (
+            supabase.table("teams")
+            .select("user_id")
+            .eq("clinic_id", clinic_id)
+            .execute()
+        )
         user_ids = [t["user_id"] for t in team_members.data] if team_members.data else []
 
         total_especialistas = 0
+        total_funcionarios = 0
+        total_membros = len(user_ids)
+
         if user_ids:
-            especialistas = (
+            membros_data = (
                 supabase.table("users")
-                .select("id")
+                .select("id, roles")
                 .in_("id", user_ids)
-                .eq("roles", "Specialist")
                 .execute()
             )
-            total_especialistas = len(especialistas.data)
+            for m in membros_data.data:
+                if m.get("roles") == "Specialist":
+                    total_especialistas += 1
+                elif m.get("roles") == "Employee":
+                    total_funcionarios += 1
 
         return jsonify({
             "total_pacientes": total_pacientes,
             "consultas_hoje": consultas_hoje,
             "total_especialistas": total_especialistas,
+            "total_funcionarios": total_funcionarios,
+            "total_membros": total_membros,
             "receita_mes": 0,
             "pendente_mes": 0,
         }), 200

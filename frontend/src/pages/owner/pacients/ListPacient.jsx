@@ -125,7 +125,10 @@ function ListPacient() {
                                         <p style={{fontFamily: 'var(--font-secondary)'}}>{formatPhone(p.whatsapp)}</p>
                                         <p>-</p>
                                         <p style={{color: p.status === 'Ativo' ? '#22C55E' : 'var(--TextColor75)', fontWeight: 700}}>{p.status || "Ativo"}</p>
-                                        <div style={{textAlign: 'right'}}><Link to={`/reception/patient/view?id=${p.id}`} className="submit" style={{padding: '6px 16px', fontSize: '13px', background: 'var(--LineColor)', color: 'var(--TextColor)', boxShadow: 'none', display: 'inline-block'}}>Ver Ficha</Link></div>
+                                        <div style={{textAlign: 'right', display: 'flex', gap: '0.5rem', justifyContent: 'flex-end'}}>
+                                            <Link to={`/owner/pacients/${id_clinic}/view-pacient/${p.id}`} className="submit" style={{padding: '6px 16px', fontSize: '13px', background: 'var(--LineColor)', color: 'var(--TextColor)', boxShadow: 'none', display: 'inline-block'}}>Ver Ficha</Link>
+                                            <Link to={`/owner/pacients/${id_clinic}/edit-pacient/${p.id}`} className="submit" style={{padding: '6px 16px', fontSize: '13px', display: 'inline-block'}}>Editar</Link>
+                                        </div>
                                     </div>
                                 ))
                             )}

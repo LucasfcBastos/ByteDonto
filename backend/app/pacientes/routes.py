@@ -51,33 +51,64 @@ def criar_paciente():
         user_id, clinic_id = get_user_clinica(token)
         data = request.get_json()
 
+        # Campos obrigatórios
         name = (data.get("name") or data.get("nome") or "").strip()
+        cpf = (data.get("cpf") or "").strip()
+        data_birth = data.get("data_birth") or data.get("data_nascimento")
+        gender = (data.get("gender") or data.get("genero") or "").strip()
+        whatsapp = (data.get("whatsapp") or data.get("telefone_whatsapp") or "").strip()
+        email = (data.get("email") or "").strip()
+        emergency_name = (data.get("emergency_name") or "").strip()
+        emergency_phone = (data.get("emergency_phone") or "").strip()
+
+        erros = []
         if not name:
-            return jsonify({"error": "Nome do paciente é obrigatório"}), 400
+            erros.append("Nome")
+        if not cpf:
+            erros.append("CPF")
+        if not data_birth:
+            erros.append("Data de nascimento")
+        if not gender:
+            erros.append("Gênero")
+        if not whatsapp:
+            erros.append("WhatsApp")
+        if not email:
+            erros.append("E-mail")
+        if not emergency_name:
+            erros.append("Nome do contato de emergência")
+        if not emergency_phone:
+            erros.append("Telefone do contato de emergência")
+
+        if erros:
+            return jsonify({
+                "error": f"Campos obrigatórios não preenchidos: {', '.join(erros)}"
+            }), 400
 
         novo = {
             "clinic_id": clinic_id,
             "user_id": user_id,
             "name": name,
-            "email": data.get("email"),
-            "whatsapp": data.get("whatsapp") or data.get("telefone_whatsapp"),
-            "phone_number": data.get("phone_number"),
-            "data_birth": data.get("data_birth") or data.get("data_nascimento"),
-            "cpf": data.get("cpf"),
-            "rg": data.get("rg"),
-            "gender": data.get("gender") or data.get("genero"),
-            "address": data.get("address"),
-            "city": data.get("city"),
-            "states": data.get("states"),
-            "country": data.get("country"),
-            "emergency_name": data.get("emergency_name"),
-            "emergency_phone": data.get("emergency_phone"),
-            "known_allergias": data.get("known_allergias"),
-            "systemic_conditions": data.get("systemic_conditions"),
-            "continuous_medications": data.get("continuous_medications"),
-            "drug_use": data.get("drug_use"),
-            "surgeries_history": data.get("surgeries_history"),
+            "cpf": cpf,
+            "rg": data.get("rg") or None,
+            "data_birth": data_birth,
+            "gender": gender,
+            "whatsapp": whatsapp,
+            "phone_number": data.get("phone_number") or None,
+            "email": email,
+            "emergency_name": emergency_name,
+            "emergency_phone": emergency_phone,
+            "country": data.get("country") or None,
+            "states": data.get("states") or None,
+            "city": data.get("city") or None,
+            "address": data.get("address") or None,
+            "known_allergias": data.get("known_allergias") or None,
+            "systemic_conditions": data.get("systemic_conditions") or None,
+            "continuous_medications": data.get("continuous_medications") or None,
+            "drug_use": data.get("drug_use") or None,
+            "surgeries_history": data.get("surgeries_history") or None,
+            "status": data.get("status") or "Ativo",
         }
+        # Remove apenas chaves com valor None para não enviar nulls desnecessários
         novo = {k: v for k, v in novo.items() if v is not None}
 
         result = supabase.table("patients").insert(novo).execute()

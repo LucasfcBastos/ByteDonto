@@ -29,6 +29,13 @@ const OWNER_ITEMS = [
     },
 
     {
+        id: "procedures",
+        icon: ClinicIcon,
+        name: "Procedimentos",
+        url: "/owner/procedures"
+    },
+
+    {
         id: "financial",
         icon: FinancialIcon,
         name: "Financeiro",

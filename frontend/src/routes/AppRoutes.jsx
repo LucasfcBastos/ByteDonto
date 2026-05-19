@@ -19,6 +19,13 @@ import OwnerListTeam from "../pages/owner/team/ListTeam";
 import OwnerPacientClinic from "../pages/owner/pacients/PacientClinic";
 import OwnerListPacient from "../pages/owner/pacients/ListPacient";
 import OwnerRegisterPacient from "../pages/owner/pacients/RegisterPacient";
+import OwnerViewPacient from "../pages/owner/pacients/ViewPacient";
+import OwnerEditPacient from "../pages/owner/pacients/EditPacient";
+
+import OwnerProcedureClinic from "../pages/owner/procedures/ProcedureClinic";
+import OwnerListProcedures from "../pages/owner/procedures/ListProcedures";
+import OwnerRegisterProcedure from "../pages/owner/procedures/RegisterProcedure";
+import OwnerEditProcedure from "../pages/owner/procedures/EditProcedure";
 
 import OwnerFinancial from "../pages/owner/Financial";
 import Onboarding from "../pages/owner/Onboarding";
@@ -81,6 +88,13 @@ export function AppRoutes() {
           <Route path="/owner/pacients" element={<PrivateRoute allowedRoles={["Owner"]}><OwnerClinicGuard><OwnerPacientClinic /></OwnerClinicGuard></PrivateRoute>} />
           <Route path="/owner/pacients/:id_clinic" element={<PrivateRoute allowedRoles={["Owner"]}><OwnerClinicGuard><OwnerListPacient /></OwnerClinicGuard></PrivateRoute>} />
           <Route path="/owner/pacients/:id_clinic/register" element={<PrivateRoute allowedRoles={["Owner"]}><OwnerClinicGuard><OwnerRegisterPacient /></OwnerClinicGuard></PrivateRoute>} />
+          <Route path="/owner/pacients/:id_clinic/view-pacient/:id_pacient" element={<PrivateRoute allowedRoles={["Owner"]}><OwnerClinicGuard><OwnerViewPacient /></OwnerClinicGuard></PrivateRoute>} />
+          <Route path="/owner/pacients/:id_clinic/edit-pacient/:id_pacient" element={<PrivateRoute allowedRoles={["Owner"]}><OwnerClinicGuard><OwnerEditPacient /></OwnerClinicGuard></PrivateRoute>} />
+
+          <Route path="/owner/procedures" element={<PrivateRoute allowedRoles={["Owner"]}><OwnerClinicGuard><OwnerProcedureClinic /></OwnerClinicGuard></PrivateRoute>} />
+          <Route path="/owner/procedures/:id_clinic" element={<PrivateRoute allowedRoles={["Owner"]}><OwnerClinicGuard><OwnerListProcedures /></OwnerClinicGuard></PrivateRoute>} />
+          <Route path="/owner/procedures/:id_clinic/register" element={<PrivateRoute allowedRoles={["Owner"]}><OwnerClinicGuard><OwnerRegisterProcedure /></OwnerClinicGuard></PrivateRoute>} />
+          <Route path="/owner/procedures/:id_clinic/edit/:id_procedure" element={<PrivateRoute allowedRoles={["Owner"]}><OwnerClinicGuard><OwnerEditProcedure /></OwnerClinicGuard></PrivateRoute>} />
 
           <Route path="/owner/financial" element={<PrivateRoute allowedRoles={["Owner"]}><OwnerClinicGuard><OwnerFinancial role="owner" /></OwnerClinicGuard></PrivateRoute>} />
 

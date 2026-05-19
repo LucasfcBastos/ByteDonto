@@ -235,9 +235,9 @@ function ListTeam() {
 
     useEffect(() => {
 
-        if (!token) return;
+        if (!token || !id_clinic) return;
 
-        apiGetMetricas(token)
+        apiGetMetricas(token, id_clinic)
             .then(setMetricas)
             .catch(err => {
                 console.error(
@@ -249,7 +249,7 @@ function ListTeam() {
                 setLoadingMetricas(false);
             });
 
-    }, [token]);
+    }, [token, id_clinic]);
 
     // =========================================================
     // MODAL

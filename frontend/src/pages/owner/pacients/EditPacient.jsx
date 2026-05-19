@@ -1,27 +1,29 @@
-import { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
-import { apiCriarPaciente } from "../../../services/api";
+import { apiGetPaciente, apiAtualizarPaciente } from "../../../services/api";
 import { maskCPF, maskPhone, maskRG } from "../../../utils/formatters";
 import Section from "../../../components/section/SectionAuth";
 import SideBar from "../../../components/bar/SideBar";
 import { useOwnerSidebar } from "../../../hooks/useSidebar";
-import '../../../styles/clinic.css';
-import '../../../styles/Forms.css';
+import "../../../styles/clinic.css";
+import "../../../styles/Forms.css";
 
-/* MAIN COMPONENT */
-function RegisterPacient() {
+function EditPacient() {
     const { token } = useAuth();
+    const { id_clinic, id_pacient } = useParams();
     const navigate = useNavigate();
-    const { id_clinic } = useParams();
 
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [salvando, setSalvando] = useState(false);
+    const [erro, setErro] = useState(null);
 
     const [nome, setNome] = useState("");
     const [cpf, setCpf] = useState("");
     const [rg, setRg] = useState("");
     const [data_nascimento, setDataNascimento] = useState("");
     const [genero, setGenero] = useState("Feminino");
+    const [status, setStatus] = useState("Ativo");
 
     const [tel_whatsapp, setTelWhatsapp] = useState("");
     const [tel_celular, setTelCelular] = useState("");
@@ -42,42 +44,86 @@ function RegisterPacient() {
 
     const opc_bar = useOwnerSidebar("patients");
 
+    useEffect(() => {
+        if (!token || !id_pacient) return;
+
+        apiGetPaciente(token, id_pacient)
+            .then((p) => {
+                setNome(p.name || "");
+                setCpf(maskCPF(p.cpf || ""));
+                setRg(p.rg || "");
+                setDataNascimento(p.data_birth ? p.data_birth.split("T")[0] : "");
+                setGenero(p.gender || "Feminino");
+                setStatus(p.status || "Ativo");
+                setTelWhatsapp(maskPhone(p.whatsapp || ""));
+                setTelCelular(maskPhone(p.phone_number || ""));
+                setEmail(p.email || "");
+                setEmergNome(p.emergency_name || "");
+                setEmergTel(maskPhone(p.emergency_phone || ""));
+                setPais(p.country || "");
+                setEstado(p.states || "");
+                setCidade(p.city || "");
+                setEnderecoCompleto(p.address || "");
+                setAlergias(p.known_allergias || "");
+                setCondicoes(p.systemic_conditions || "");
+                setMedicacoes(p.continuous_medications || "");
+                setDrogas(p.drug_use || "");
+                setCirurgias(p.surgeries_history || "");
+            })
+            .catch((err) => setErro(err.message))
+            .finally(() => setLoading(false));
+    }, [token, id_pacient]);
+
     async function handleSubmit(e) {
         e.preventDefault();
-        setLoading(true);
+        setSalvando(true);
+        setErro(null);
 
         const payload = {
             name: nome,
-            cpf: cpf.replace(/\D/g, ''),
+            cpf: cpf.replace(/\D/g, ""),
             rg: rg || undefined,
             data_birth: data_nascimento,
             gender: genero,
+            status,
             email,
-            whatsapp: tel_whatsapp.replace(/\D/g, ''),
-            phone_number: tel_celular ? tel_celular.replace(/\D/g, '') : undefined,
+            whatsapp: tel_whatsapp.replace(/\D/g, ""),
+            phone_number: tel_celular ? tel_celular.replace(/\D/g, "") : undefined,
+            emergency_name: emerg_nome,
+            emergency_phone: emerg_tel.replace(/\D/g, ""),
             country: pais || undefined,
             states: estado || undefined,
             city: cidade || undefined,
             address: endereco_completo || undefined,
-            emergency_name: emerg_nome,
-            emergency_phone: emerg_tel.replace(/\D/g, ''),
             known_allergias: alergias || undefined,
             systemic_conditions: condicoes || undefined,
             continuous_medications: medicacoes || undefined,
             drug_use: drogas || undefined,
             surgeries_history: cirurgias || undefined,
-            status: "Ativo",
         };
 
         try {
-            await apiCriarPaciente(token, payload);
-            alert("Paciente cadastrado com sucesso!");
-            navigate(`/owner/pacients/${id_clinic}`);
+            await apiAtualizarPaciente(token, id_pacient, payload);
+            navigate(`/owner/pacients/${id_clinic}/view-pacient/${id_pacient}`);
         } catch (err) {
-            alert(err.message || "Erro ao cadastrar paciente.");
+            setErro(err.message || "Erro ao atualizar paciente.");
         } finally {
-            setLoading(false);
+            setSalvando(false);
         }
+    }
+
+    if (loading) {
+        return (
+            <>
+                <Section type_styles="owner" />
+                <SideBar opc={opc_bar} styles="owner" />
+                <main className="mainBar owner register">
+                    <div style={{ padding: "2rem", textAlign: "center", color: "var(--TextColor75)" }}>
+                        Carregando dados do paciente...
+                    </div>
+                </main>
+            </>
+        );
     }
 
     return (
@@ -87,17 +133,40 @@ function RegisterPacient() {
 
             <main className="mainBar owner register">
                 <p>
-                    <Link className="text75" to={`/owner/pacients/${id_clinic}`}>← Voltar</Link>
+                    <Link
+                        className="text75"
+                        to={`/owner/pacients/${id_clinic}/view-pacient/${id_pacient}`}
+                    >
+                        ← Voltar
+                    </Link>
                 </p>
+
                 <div className="camp-clinic camp-register">
                     <div>
-                        <h1 style={{ margin: '0 0 0.5rem 0' }}>Cadastrar o Paciente</h1>
-                        <p className="text75">Preencha os dados abaixo dos pacientes para melhor triagem de consulta.</p>
+                        <h1 style={{ margin: "0 0 0.5rem 0" }}>Editar Paciente</h1>
+                        <p className="text75">
+                            Atualize os dados do paciente abaixo.
+                        </p>
 
-                        <form onSubmit={handleSubmit} style={{ marginTop: '2rem' }}>
+                        {erro && (
+                            <div
+                                style={{
+                                    background: "rgba(239,68,68,0.1)",
+                                    color: "#EF4444",
+                                    padding: "10px 14px",
+                                    borderRadius: "8px",
+                                    margin: "1rem 0",
+                                    fontSize: "14px",
+                                }}
+                            >
+                                {erro}
+                            </div>
+                        )}
+
+                        <form onSubmit={handleSubmit} style={{ marginTop: "2rem" }}>
 
                             <div className="forms-dat-section">
-                                <p className="sec-title">Identificação Básicos</p>
+                                <p className="sec-title">Identificação Básica</p>
 
                                 <div className="field">
                                     <label htmlFor="nome">Nome Completo *</label>
@@ -105,7 +174,7 @@ function RegisterPacient() {
                                         id="nome"
                                         type="text"
                                         value={nome}
-                                        onChange={e => setNome(e.target.value)}
+                                        onChange={(e) => setNome(e.target.value)}
                                         required
                                     />
                                 </div>
@@ -117,7 +186,7 @@ function RegisterPacient() {
                                             id="cpf"
                                             type="text"
                                             value={cpf}
-                                            onChange={e => setCpf(maskCPF(e.target.value))}
+                                            onChange={(e) => setCpf(maskCPF(e.target.value))}
                                             required
                                             placeholder="000.000.000-00"
                                             maxLength={14}
@@ -129,7 +198,7 @@ function RegisterPacient() {
                                             id="rg"
                                             type="text"
                                             value={rg}
-                                            onChange={e => setRg(maskRG(e.target.value))}
+                                            onChange={(e) => setRg(maskRG(e.target.value))}
                                             placeholder="Apenas números"
                                             maxLength={9}
                                         />
@@ -143,18 +212,34 @@ function RegisterPacient() {
                                             id="data_nascimento"
                                             type="date"
                                             value={data_nascimento}
-                                            onChange={e => setDataNascimento(e.target.value)}
+                                            onChange={(e) => setDataNascimento(e.target.value)}
                                             required
                                         />
                                     </div>
                                     <div className="field">
                                         <label htmlFor="genero">Gênero *</label>
-                                        <select id="genero" value={genero} onChange={e => setGenero(e.target.value)}>
+                                        <select
+                                            id="genero"
+                                            value={genero}
+                                            onChange={(e) => setGenero(e.target.value)}
+                                        >
                                             <option>Feminino</option>
                                             <option>Masculino</option>
                                             <option>Outro</option>
                                         </select>
                                     </div>
+                                </div>
+
+                                <div className="field">
+                                    <label htmlFor="status">Status *</label>
+                                    <select
+                                        id="status"
+                                        value={status}
+                                        onChange={(e) => setStatus(e.target.value)}
+                                    >
+                                        <option>Ativo</option>
+                                        <option>Inativo</option>
+                                    </select>
                                 </div>
                             </div>
 
@@ -163,12 +248,12 @@ function RegisterPacient() {
 
                                 <div className="flex-inpus">
                                     <div className="field">
-                                        <label htmlFor="tel_whatsapp">Telefone Whatsapp *</label>
+                                        <label htmlFor="tel_whatsapp">Telefone WhatsApp *</label>
                                         <input
                                             id="tel_whatsapp"
                                             type="text"
                                             value={tel_whatsapp}
-                                            onChange={e => setTelWhatsapp(maskPhone(e.target.value))}
+                                            onChange={(e) => setTelWhatsapp(maskPhone(e.target.value))}
                                             required
                                             placeholder="(DD) 90000-0000"
                                             maxLength={15}
@@ -180,7 +265,7 @@ function RegisterPacient() {
                                             id="tel_celular"
                                             type="text"
                                             value={tel_celular}
-                                            onChange={e => setTelCelular(maskPhone(e.target.value))}
+                                            onChange={(e) => setTelCelular(maskPhone(e.target.value))}
                                             placeholder="(DD) 90000-0000"
                                             maxLength={15}
                                         />
@@ -193,7 +278,7 @@ function RegisterPacient() {
                                         id="email"
                                         type="email"
                                         value={email}
-                                        onChange={e => setEmail(e.target.value)}
+                                        onChange={(e) => setEmail(e.target.value)}
                                         placeholder="paciente@email.com"
                                         required
                                     />
@@ -206,17 +291,17 @@ function RegisterPacient() {
                                             id="emerg_nome"
                                             type="text"
                                             value={emerg_nome}
-                                            onChange={e => setEmergNome(e.target.value)}
+                                            onChange={(e) => setEmergNome(e.target.value)}
                                             required
                                         />
                                     </div>
                                     <div className="field">
-                                        <label htmlFor="emerg_tel">Telefone Contato de Emergência *</label>
+                                        <label htmlFor="emerg_tel">Telefone de Emergência *</label>
                                         <input
                                             id="emerg_tel"
                                             type="text"
                                             value={emerg_tel}
-                                            onChange={e => setEmergTel(maskPhone(e.target.value))}
+                                            onChange={(e) => setEmergTel(maskPhone(e.target.value))}
                                             placeholder="(DD) 90000-0000"
                                             maxLength={15}
                                             required
@@ -234,7 +319,7 @@ function RegisterPacient() {
                                         id="pais"
                                         type="text"
                                         value={pais}
-                                        onChange={e => setPais(e.target.value)}
+                                        onChange={(e) => setPais(e.target.value)}
                                     />
                                 </div>
 
@@ -245,7 +330,7 @@ function RegisterPacient() {
                                             id="estado"
                                             type="text"
                                             value={estado}
-                                            onChange={e => setEstado(e.target.value)}
+                                            onChange={(e) => setEstado(e.target.value)}
                                         />
                                     </div>
                                     <div className="field">
@@ -254,7 +339,7 @@ function RegisterPacient() {
                                             id="cidade"
                                             type="text"
                                             value={cidade}
-                                            onChange={e => setCidade(e.target.value)}
+                                            onChange={(e) => setCidade(e.target.value)}
                                         />
                                     </div>
                                 </div>
@@ -265,7 +350,7 @@ function RegisterPacient() {
                                         id="endereco_completo"
                                         type="text"
                                         value={endereco_completo}
-                                        onChange={e => setEnderecoCompleto(e.target.value)}
+                                        onChange={(e) => setEnderecoCompleto(e.target.value)}
                                     />
                                 </div>
                             </div>
@@ -278,7 +363,7 @@ function RegisterPacient() {
                                     <textarea
                                         id="alergias"
                                         value={alergias}
-                                        onChange={e => setAlergias(e.target.value)}
+                                        onChange={(e) => setAlergias(e.target.value)}
                                         rows="3"
                                     />
                                 </div>
@@ -288,7 +373,7 @@ function RegisterPacient() {
                                     <textarea
                                         id="condicoes"
                                         value={condicoes}
-                                        onChange={e => setCondicoes(e.target.value)}
+                                        onChange={(e) => setCondicoes(e.target.value)}
                                         rows="3"
                                     />
                                 </div>
@@ -298,7 +383,7 @@ function RegisterPacient() {
                                     <textarea
                                         id="medicacoes"
                                         value={medicacoes}
-                                        onChange={e => setMedicacoes(e.target.value)}
+                                        onChange={(e) => setMedicacoes(e.target.value)}
                                         rows="3"
                                     />
                                 </div>
@@ -308,7 +393,7 @@ function RegisterPacient() {
                                     <textarea
                                         id="drogas"
                                         value={drogas}
-                                        onChange={e => setDrogas(e.target.value)}
+                                        onChange={(e) => setDrogas(e.target.value)}
                                         rows="3"
                                     />
                                 </div>
@@ -318,15 +403,37 @@ function RegisterPacient() {
                                     <textarea
                                         id="cirurgias"
                                         value={cirurgias}
-                                        onChange={e => setCirurgias(e.target.value)}
+                                        onChange={(e) => setCirurgias(e.target.value)}
                                         rows="3"
                                     />
                                 </div>
                             </div>
 
-                            <div style={{ display: "flex", justifyContent: "end", marginTop: '2rem' }}>
-                                <button type="submit" className="submit" disabled={loading}>
-                                    {loading ? "Salvando..." : "Salvar Paciente"}
+                            <div
+                                style={{
+                                    display: "flex",
+                                    justifyContent: "flex-end",
+                                    gap: "1rem",
+                                    marginTop: "2rem",
+                                }}
+                            >
+                                <Link
+                                    to={`/owner/pacients/${id_clinic}/view-pacient/${id_pacient}`}
+                                    className="submit"
+                                    style={{
+                                        background: "var(--LineColor)",
+                                        color: "var(--TextColor)",
+                                        boxShadow: "none",
+                                    }}
+                                >
+                                    Cancelar
+                                </Link>
+                                <button
+                                    type="submit"
+                                    className="submit"
+                                    disabled={salvando}
+                                >
+                                    {salvando ? "Salvando..." : "Salvar Alterações"}
                                 </button>
                             </div>
                         </form>
@@ -337,5 +444,4 @@ function RegisterPacient() {
     );
 }
 
-/* STANDARD EXPORT */
-export default RegisterPacient;
+export default EditPacient;
