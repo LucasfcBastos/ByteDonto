@@ -233,23 +233,41 @@ function ListTeam() {
     // MÉTRICAS
     // =========================================================
 
-    useEffect(() => {
+    const carregarMetricas = useCallback(async () => {
 
         if (!token || !id_clinic) return;
 
-        apiGetMetricas(token, id_clinic)
-            .then(setMetricas)
-            .catch(err => {
-                console.error(
-                    "Erro ao carregar métricas",
-                    err
-                );
-            })
-            .finally(() => {
-                setLoadingMetricas(false);
-            });
+        try {
+
+            setLoadingMetricas(true);
+
+            const data = await apiGetMetricas(
+                token,
+                id_clinic
+            );
+
+            setMetricas(data);
+
+        } catch (err) {
+
+            console.error(
+                "Erro ao carregar métricas",
+                err
+            );
+
+        } finally {
+
+            setLoadingMetricas(false);
+
+        }
 
     }, [token, id_clinic]);
+
+    useEffect(() => {
+
+        carregarMetricas();
+
+    }, [carregarMetricas]);
 
     // =========================================================
     // MODAL
@@ -289,57 +307,58 @@ function ListTeam() {
 
     async function handleCriar(e) {
 
-        e.preventDefault();
+            e.preventDefault();
 
-        setEnviando(true);
+            setEnviando(true);
 
-        setFormErro(null);
+            setFormErro(null);
 
-        setFormSucesso(null);
+            setFormSucesso(null);
 
-        try {
+            try {
 
-            const novo = await apiCriarMembro(
-                token,
-                id_clinic,
-                form
-            );
+                const novo = await apiCriarMembro(
+                    token,
+                    id_clinic,
+                    form
+                );
 
-            // RECARREGA A EQUIPE
-            await carregarEquipe();
+                // RECARREGA A EQUIPE
+                await carregarEquipe();
 
-            await refreshUser();
+                await carregarMetricas();
 
-            setFormSucesso(
-                `Membro adicionado com sucesso!`
-            );
+                await refreshUser();
 
-            setTimeout(() => {
+                setFormSucesso(
+                    `Membro adicionado com sucesso!`
+                );
 
-                setShowForm(false);
+                setTimeout(() => {
 
-                setFormSucesso(null);
+                    setShowForm(false);
 
-            }, 1500);
+                    setFormSucesso(null);
 
-        } catch (e) {
+                }, 1500);
 
-            setFormErro(e.message);
+            } catch (e) {
 
-        } finally {
+                setFormErro(e.message);
 
-            setEnviando(false);
+            } finally {
+
+                setEnviando(false);
+
+            }
 
         }
 
-    }
+        // =========================================================
+        // REMOVER MEMBRO
+        // =========================================================
 
-    // =========================================================
-    // REMOVER MEMBRO
-    // =========================================================
-
-    async function handleRemover(user_id) {
-
+        async function handleRemover(user_id) {
         const confirmar = window.confirm(
             "Deseja remover este membro da clínica?"
         );
@@ -349,7 +368,6 @@ function ListTeam() {
         setRemovendoId(user_id);
 
         try {
-
             await apiRemoverMembro(
                 token,
                 id_clinic,
@@ -357,30 +375,25 @@ function ListTeam() {
             );
 
             setEquipe(prev =>
-                prev.filter(m => m.id !== user_id)
+                prev.filter(m => m.team_id !== user_id)
             );
+
+            await carregarEquipe();
+
+            await carregarMetricas();
 
             await refreshUser();
 
         } catch (e) {
-
             alert(e.message);
-
         } finally {
-
             setRemovendoId(null);
-
         }
-
     }
 
-    const membrosNaoDono = equipe.filter(
-        m => m.roles !== "Owner"
-    );
+    const membrosNaoDono = equipe;
 
-    const dono = equipe.find(
-        m => m.roles === "Owner"
-    );
+    const dono = null;
 
     return (
         <>
@@ -752,7 +765,7 @@ function ListTeam() {
                                     return (
 
                                         <div
-                                            key={membro.id}
+                                            key={membro.team_id}
                                             className="table-row"
                                             style={{
                                                 gridTemplateColumns:
@@ -808,12 +821,12 @@ function ListTeam() {
                                                 <button
                                                     onClick={() =>
                                                         handleRemover(
-                                                            membro.id
+                                                            membro.team_id
                                                         )
                                                     }
 
                                                     disabled={
-                                                        removendoId === membro.id
+                                                        removendoId === membro.team_id
                                                     }
 
                                                     className="submit"
@@ -835,7 +848,7 @@ function ListTeam() {
                                                             "none"
                                                     }}
                                                 >
-                                                    {removendoId === membro.id
+                                                    {removendoId === membro.team_id
                                                         ? "Removendo..."
                                                         : "Remover"}
                                                 </button>

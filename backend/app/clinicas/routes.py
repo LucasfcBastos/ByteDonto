@@ -27,14 +27,6 @@ def criar_clinica():
         payload["owner_id"] = user_id
 
         result_clinica = supabase.table("clinics").insert(payload).execute()
-        nova_clinica_id = result_clinica.data[0]["id"]
-
-        # Vincula o owner à clínica via tabela teams
-        supabase.table("teams").insert({
-            "user_id": user_id,
-            "clinic_id": nova_clinica_id,
-            "status": "active",
-        }).execute()
 
         return jsonify(result_clinica.data[0]), 201
     except Exception as e:
@@ -91,7 +83,6 @@ def get_clinica(clinica_id):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-
 @clinicas_bp.route("/<clinica_id>", methods=["DELETE"])
 def deletar_clinica(clinica_id):
 
@@ -125,13 +116,6 @@ def deletar_clinica(clinica_id):
                 "error": "Acesso não autorizado a esta clínica"
             }), 403
 
-        # Remove vínculos
-        supabase \
-            .table("teams") \
-            .delete() \
-            .eq("clinic_id", clinica_id) \
-            .execute()
-
         # Remove clínica
         supabase \
             .table("clinics") \
@@ -148,7 +132,6 @@ def deletar_clinica(clinica_id):
         return jsonify({
             "error": str(e)
         }), 500
-
 
 @clinicas_bp.route("/<clinica_id>", methods=["PUT"])
 def atualizar_clinica(clinica_id):

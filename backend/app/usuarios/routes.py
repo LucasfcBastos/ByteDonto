@@ -4,14 +4,14 @@ from app.database import supabase
 from app.utils import get_token, get_user_e_clinica
 from config import Config
 
+usuarios_bp = Blueprint("usuarios", __name__)
+
 supabase_admin = create_client(
     Config.SUPABASE_URL,
     Config.SUPABASE_KEY
 )
 
-usuarios_bp = Blueprint("usuarios", __name__)
-
-PAPEIS_VALIDOS = ["Specialist", "Employee"]
+PAPEIS_VALIDOS = ["Specialist", "Employee", "Owner"]
 
 
 # =========================================================
@@ -19,9 +19,6 @@ PAPEIS_VALIDOS = ["Specialist", "Employee"]
 # =========================================================
 @usuarios_bp.route("/<clinic_id>", methods=["GET"])
 def listar_equipe(clinic_id):
-    """
-    Lista todos os membros vinculados à clínica.
-    """
 
     token = get_token(request)
 
@@ -29,17 +26,31 @@ def listar_equipe(clinic_id):
         return jsonify({"error": "Não autorizado"}), 401
 
     try:
+        user = supabase.auth.get_user(token).user
+        user_id = user.id
 
-        _, _, role_solicitante = get_user_e_clinica(token)
+        # -------------------------------------------------
+        # PEGA ROLE DO USUÁRIO (sem depender de clínica)
+        # -------------------------------------------------
+        user_data = (
+            supabase
+            .table("users")
+            .select("roles")
+            .eq("id", user_id)
+            .single()
+            .execute()
+        )
+
+        role_solicitante = user_data.data.get("roles")
 
         if role_solicitante != "Owner":
             return jsonify({
                 "error": "Apenas o proprietário pode visualizar a equipe"
             }), 403
 
-        # =====================================================
-        # BUSCA TODOS OS VÍNCULOS DA CLÍNICA
-        # =====================================================
+        # -------------------------------------------------
+        # BUSCA EQUIPE DA CLÍNICA RECEBIDA NA ROTA
+        # -------------------------------------------------
         teams_result = (
             supabase
             .table("teams")
@@ -63,23 +74,15 @@ def listar_equipe(clinic_id):
 
             user = team.get("users") or {}
 
-            # =================================================
-            # BUSCA EMAIL EM auth.users
-            # =================================================
-            auth_user = (
-                supabase_admin.auth.admin.get_user_by_id(
-                    team["user_id"]
-                )
+            auth_user = supabase_admin.auth.admin.get_user_by_id(
+                team["user_id"]
             )
 
-            email = None
-
-            if auth_user and auth_user.user:
-                email = auth_user.user.email
+            email = auth_user.user.email if auth_user and auth_user.user else None
 
             membros.append({
                 "team_id": team["id"],
-                "id": user.get("id"),
+                "user_id": user.get("id"),
                 "name": user.get("name"),
                 "email": email,
                 "roles": user.get("roles"),
@@ -89,152 +92,136 @@ def listar_equipe(clinic_id):
         return jsonify(membros), 200
 
     except Exception as e:
-        return jsonify({
-            "error": str(e)
-        }), 500
+        return jsonify({"error": str(e)}), 500
 
 
 # =========================================================
-# CRIAR VÍNCULO COM CLÍNICA
+# CRIAR MEMBRO
 # =========================================================
 @usuarios_bp.route("/<clinic_id>/criar", methods=["POST"])
 def criar_membro(clinic_id):
-    """
-    Vincula um usuário já existente à clínica.
-
-    Body:
-    {
-        "email": "...",
-        "papel": "Specialist"
-    }
-    """
 
     token = get_token(request)
-
     if not token:
         return jsonify({"error": "Não autorizado"}), 401
 
     try:
+        user = supabase.auth.get_user(token).user
+        user_id = user.id
 
-        _, _, role_solicitante = get_user_e_clinica(token)
-
-        if role_solicitante != "Owner":
-            return jsonify({
-                "error": "Apenas o proprietário pode adicionar membros"
-            }), 403
-
-        data = request.get_json()
-
-        email = data.get("email", "").strip().lower()
-        papel = data.get("papel", "").strip()
-
-        # =====================================================
-        # VALIDAÇÕES
-        # =====================================================
-        if not email or not papel:
-            return jsonify({
-                "error": "Email e papel são obrigatórios"
-            }), 400
-
-        if papel not in PAPEIS_VALIDOS:
-            return jsonify({
-                "error": "Papel inválido"
-            }), 400
-
-        # =====================================================
-        # BUSCA USUÁRIO NO AUTH
-        # =====================================================
-        auth_response = supabase_admin.auth.admin.list_users()
-
-        usuario_auth = None
-
-        for u in auth_response:
-
-            if u.email.lower() == email:
-                usuario_auth = u
-                break
-
-        if not usuario_auth:
-            return jsonify({
-                "error": "Usuário não encontrado no sistema"
-            }), 404
-
-        user_id = usuario_auth.id
-
-        # =====================================================
-        # BUSCA PERFIL EM users
-        # =====================================================
-        user_result = (
+        # --------------------------------------------------
+        # valida owner
+        # --------------------------------------------------
+        clinic = (
             supabase
-            .table("users")
-            .select("id, name, roles")
-            .eq("id", user_id)
+            .table("clinics")
+            .select("owner_id")
+            .eq("id", clinic_id)
             .single()
             .execute()
         )
 
-        if not user_result.data:
-            return jsonify({
-                "error": "Perfil do usuário não encontrado"
-            }), 404
+        if not clinic.data:
+            return jsonify({"error": "Clínica não encontrada"}), 404
 
-        usuario = user_result.data
+        if clinic.data["owner_id"] != user_id:
+            return jsonify({"error": "Apenas o owner pode adicionar membros"}), 403
 
-        # =====================================================
-        # VALIDA O PAPEL
-        # =====================================================
-        if usuario["roles"] != papel:
-            return jsonify({
-                "error": f"O usuário possui perfil '{usuario['roles']}'"
-            }), 400
+        # --------------------------------------------------
+        # input
+        # --------------------------------------------------
+        data = request.get_json()
+        email = (data.get("email") or "").strip().lower()
+        papel = (data.get("papel") or "").strip()
 
-        # =====================================================
-        # VERIFICA SE JÁ ESTÁ NA CLÍNICA
-        # =====================================================
-        membro_existente = (
+        if not email or not papel:
+            return jsonify({"error": "Email e papel são obrigatórios"}), 400
+
+        if papel not in PAPEIS_VALIDOS:
+            return jsonify({"error": "Papel inválido"}), 400
+
+        # --------------------------------------------------
+        # busca usuário no auth
+        # --------------------------------------------------
+        auth_users = supabase_admin.auth.admin.list_users()
+        usuarios = auth_users.users if hasattr(auth_users, "users") else auth_users
+
+        usuario_auth = next(
+            (u for u in usuarios if u.email and u.email.lower() == email),
+            None
+        )
+
+        if not usuario_auth:
+            return jsonify({"error": "Usuário não encontrado"}), 404
+
+        target_user_id = usuario_auth.id
+
+        # --------------------------------------------------
+        # pega role REAL do usuário
+        # --------------------------------------------------
+        user_profile = (
+            supabase
+            .table("users")
+            .select("roles")
+            .eq("id", target_user_id)
+            .single()
+            .execute()
+        )
+
+        if not user_profile.data:
+            return jsonify({"error": "Perfil do usuário não encontrado"}), 404
+
+        role_real = user_profile.data["roles"]
+
+        # --------------------------------------------------
+        # REGRA IMPORTANTE (CORREÇÃO DO SEU BUG)
+        # --------------------------------------------------
+        if role_real != papel:
+            if papel == "Spacialist":
+                return jsonify({
+                    "error": "Conflito de papel. Usuário com esse email não é Especialista"
+                }), 409
+            elif papel == "Employee":
+                return jsonify({
+                    "error": "Conflito de papel. Usuário com esse email não é Funcionario"
+                }), 409
+
+        # --------------------------------------------------
+        # evita duplicidade
+        # --------------------------------------------------
+        exists = (
             supabase
             .table("teams")
             .select("id")
             .eq("clinic_id", clinic_id)
-            .eq("user_id", user_id)
+            .eq("user_id", target_user_id)
             .execute()
         )
 
-        if membro_existente.data:
-            return jsonify({
-                "error": "Usuário já faz parte da clínica"
-            }), 409
+        if exists.data:
+            return jsonify({"error": "Usuário já está na clínica"}), 409
 
-        # =====================================================
-        # CRIA VÍNCULO
-        # =====================================================
-        novo_membro = (
-            supabase_admin
+        # --------------------------------------------------
+        # cria vínculo (SEM role aqui)
+        # --------------------------------------------------
+        result = (
+            supabase
             .table("teams")
             .insert({
-                "user_id": user_id,
                 "clinic_id": clinic_id,
+                "user_id": target_user_id,
                 "status": "active"
             })
             .execute()
         )
 
         return jsonify({
-            "message": "Membro vinculado com sucesso",
-            "member": {
-                "team_id": novo_membro.data[0]["id"],
-                "id": usuario["id"],
-                "name": usuario["name"],
-                "email": email,
-                "roles": usuario["roles"],
-                "status": "active"
-            }
+            "message": "Membro adicionado com sucesso",
+            "team": result.data[0]
         }), 201
 
     except Exception as e:
-        return jsonify({
-            "error": str(e)
-        }), 500
+        return jsonify({"error": str(e)}), 500
 
 
 # =========================================================
@@ -242,66 +229,57 @@ def criar_membro(clinic_id):
 # =========================================================
 @usuarios_bp.route("/<clinic_id>/<usuario_id>", methods=["DELETE"])
 def remover_membro(clinic_id, usuario_id):
-    """
-    Remove o vínculo do usuário com a clínica.
-    """
 
     token = get_token(request)
-
     if not token:
         return jsonify({"error": "Não autorizado"}), 401
 
     try:
+        user = supabase.auth.get_user(token).user
+        user_id = user.id
 
-        solicitante_id, _, role_solicitante = (
-            get_user_e_clinica(token)
+        # --------------------------------------------------
+        # valida owner
+        # --------------------------------------------------
+        clinic = (
+            supabase
+            .table("clinics")
+            .select("owner_id")
+            .eq("id", clinic_id)
+            .single()
+            .execute()
         )
 
-        if role_solicitante != "Owner":
-            return jsonify({
-                "error": "Apenas o proprietário pode remover membros"
-            }), 403
+        if not clinic.data:
+            return jsonify({"error": "Clínica não encontrada"}), 404
 
-        # =====================================================
-        # NÃO PODE REMOVER A SI MESMO
-        # =====================================================
-        if usuario_id == solicitante_id:
-            return jsonify({
-                "error": "Você não pode remover a si mesmo"
-            }), 400
+        if clinic.data["owner_id"] != user_id:
+            return jsonify({"error": "Apenas o owner pode remover membros"}), 403
 
-        # =====================================================
-        # VERIFICA SE O MEMBRO EXISTE NA CLÍNICA
-        # =====================================================
-        membro = (
+        # --------------------------------------------------
+        # evita auto delete
+        # --------------------------------------------------
+        if usuario_id == user_id:
+            return jsonify({"error": "Você não pode se remover"}), 400
+
+        # --------------------------------------------------
+        # delete real
+        # --------------------------------------------------
+        deleted = (
             supabase
             .table("teams")
-            .select("id")
+            .delete()
             .eq("clinic_id", clinic_id)
-            .eq("user_id", usuario_id)
+            .eq("id", usuario_id)
             .execute()
         )
 
-        if not membro.data:
-            return jsonify({
-                "error": "Membro não encontrado na clínica"
-            }), 404
-
-        # =====================================================
-        # REMOVE SOMENTE O VÍNCULO
-        # =====================================================
-        supabase_admin \
-            .table("teams") \
-            .delete() \
-            .eq("clinic_id", clinic_id) \
-            .eq("user_id", usuario_id) \
-            .execute()
+        if not deleted.data:
+            return jsonify({"error": "Membro não encontrado na clínica"}), 404
 
         return jsonify({
-            "message": "Membro removido da clínica com sucesso"
+            "message": "Membro removido com sucesso"
         }), 200
 
     except Exception as e:
-        return jsonify({
-            "error": str(e)
-        }), 500
+        return jsonify({"error": str(e)}), 500

@@ -29,15 +29,56 @@ def get_token(req):
 
 
 def get_user_clinica(token):
-    """Retorna (user_id, clinic_id). Lança ValueError se o perfil não for encontrado."""
+    """
+    Retorna (user_id, clinic_id).
+
+    Fluxo:
+    1. Verifica se usuário é owner de alguma clínica
+    2. Se não for, verifica vínculo na tabela teams
+    """
+
     user = supabase.auth.get_user(token).user
-    team = supabase.table("teams").select("clinic_id").eq("user_id", user.id).execute()
-    if not team.data:
-        raise ValueError("Nenhuma clínica vinculada. Registre uma clínica antes de continuar.")
-    clinic_id = team.data[0].get("clinic_id")
-    if not clinic_id:
-        raise ValueError("Nenhuma clínica vinculada. Registre uma clínica antes de continuar.")
-    return user.id, clinic_id
+    user_id = user.id
+
+    # ---------------------------------------------------
+    # 1. Verifica se é OWNER de alguma clínica
+    # ---------------------------------------------------
+
+    clinic_owner = (
+        supabase
+        .table("clinics")
+        .select("id")
+        .eq("owner_id", user_id)
+        .maybe_single()
+        .execute()
+    )
+
+    if clinic_owner.data:
+        return user_id, clinic_owner.data["id"]
+
+    # ---------------------------------------------------
+    # 2. Verifica se é membro da equipe
+    # ---------------------------------------------------
+
+    team = (
+        supabase
+        .table("teams")
+        .select("clinic_id")
+        .eq("user_id", user_id)
+        .maybe_single()
+        .execute()
+    )
+
+    if team.data and team.data.get("clinic_id"):
+        return user_id, team.data["clinic_id"]
+
+    # ---------------------------------------------------
+    # 3. Nenhuma clínica encontrada
+    # ---------------------------------------------------
+
+    raise ValueError(
+        "Nenhuma clínica vinculada. Registre uma clínica antes de continuar."
+    )
 
 
 def get_user_e_clinica(token):
