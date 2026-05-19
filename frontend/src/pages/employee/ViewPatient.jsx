@@ -4,7 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 import { apiGetPaciente } from "../../services/api";
 import Section from "../../components/section/SectionAuth";
 import SideBar from "../../components/bar/SideBar";
-import { useReceptionSidebar } from "../../hooks/useSidebar";
+import { useEmployeeSidebar } from "../../hooks/useSidebar";
 import "../../styles/clinic.css";
 import "../../styles/Forms.css";
 import { formatCPF, formatPhone, formatDate, calcIdade } from "../../utils/formatters";
@@ -19,7 +19,7 @@ export default function ViewPatient() {
     const [activeTab, setActiveTab] = useState("historico");
 
     // Menu da recepção
-    const opc_bar = useReceptionSidebar("patients");
+    const opc_bar = useEmployeeSidebar("patients");
 
     useEffect(() => {
         if (!pacienteId) {

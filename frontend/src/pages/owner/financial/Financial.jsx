@@ -1,18 +1,18 @@
 /* IMPORTS */
 import { useState, useEffect, useMemo } from "react";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../../context/AuthContext";
 import {
     apiGetFinanceiro,
     apiCriarLancamento,
     apiAtualizarLancamento,
     apiGetPacientes,
-} from "../../services/api";
-import Section from "../../components/section/SectionAuth";
-import SideBar from "../../components/bar/SideBar";
-import { useOwnerSidebar } from "../../hooks/useSidebar";
-import { useReceptionSidebar } from "../../hooks/useSidebar";
-import "../../styles/clinic.css";
-import "../../styles/Forms.css";
+} from "../../../services/api";
+import Section from "../../../components/section/SectionAuth";
+import SideBar from "../../../components/bar/SideBar";
+import { useOwnerSidebar } from "../../../hooks/useSidebar";
+import { useEmployeeSidebar } from "../../../hooks/useSidebar";
+import "../../../styles/clinic.css";
+import "../../../styles/Forms.css";
 
 const FORMAS_PAGAMENTO = ["Dinheiro", "Cartão Débito", "Cartão Crédito", "Pix", "Convênio"];
 const STATUS_OPTIONS = ["Pago", "Pendente", "Cancelado"];
@@ -116,7 +116,7 @@ function Financial({ role }) {
 
     const isOwner = role === "owner";
     const ownerBar     = useOwnerSidebar("financial");
-    const receptionBar = useReceptionSidebar("financial");
+    const receptionBar = useEmployeeSidebar("financial");
     const opc_bar      = isOwner ? ownerBar : receptionBar;
     const sectionStyle = isOwner ? "owner" : "reception";
 

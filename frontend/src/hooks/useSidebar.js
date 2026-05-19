@@ -5,6 +5,8 @@ import ClinicIcon from "../assets/svg/clinic.svg?react";
 import TeamIcon from "../assets/svg/team.svg?react";
 import FinancialIcon from "../assets/svg/financial.svg?react";
 import PatientIcon from "../assets/svg/patient.svg?react";
+import CalendarIcon from "../assets/svg/calendar.svg?react";
+import PanelIcon from "../assets/svg/panel.svg?react";
 
 const OWNER_ITEMS = [
     {
@@ -30,7 +32,7 @@ const OWNER_ITEMS = [
 
     {
         id: "procedures",
-        icon: ClinicIcon,
+        icon: PanelIcon,
         name: "Procedimentos",
         url: "/owner/procedures"
     },
@@ -49,6 +51,59 @@ const OWNER_ONLY_CLINIC = [
         icon: ClinicIcon,
         name: "Clínica",
         url: "/owner/clinic"
+    },
+];
+
+const EMPLOYEE_ITEMS = [
+    {
+        id: "dashboard",
+        icon: PanelIcon,
+        name: "Painel Principal",
+        url: "/employee/dashboard"
+    },
+
+    {
+        id: "patients",
+        icon: PatientIcon,
+        name: "Pacientes",
+        url: "/employee/pacients"
+    },
+
+    {
+        id: "consultations",
+        icon: CalendarIcon,
+        name: "Consulta",
+        url: "/employee/consultations"
+    },
+
+    {
+        id: "financial",
+        icon: FinancialIcon,
+        name: "Financeiro",
+        url: "/employee/financial"
+    },
+];
+
+const SPECIALIST_ITEMS = [
+    {
+        id: "dashboard",
+        icon: PanelIcon,
+        name: "Painel Principal",
+        url: "/specialist/dashboard"
+    },
+
+    {
+        id: "schedule",
+        icon: CalendarIcon,
+        name: "Minha Agenda",
+        url: "/specialist/schedule"
+    },
+
+    {
+        id: "patients",
+        icon: PatientIcon,
+        name: "Painel Principal",
+        url: "/specialist/patients"
     },
 ];
 
@@ -86,93 +141,14 @@ export function useOwnerSidebar(activeId) {
 
 export function useSpecialistSidebar(activeId) {
 
-    const { user } = useAuth();
-
-    const verAgenda = usePermissao("ver_agenda");
-
-    const verPacientes = usePermissao("ver_pacientes");
-
-    if (user?.perfil?.papel === "Dono") {
-        return withSelect(OWNER_ITEMS, activeId);
-    }
-
-    const items = [];
-
-    if (verAgenda) {
-        items.push(
-            item(
-                "agenda",
-                "Minha Agenda",
-                "/specialist/dashboard"
-            )
-        );
-    }
-
-    if (verPacientes) {
-        items.push(
-            item(
-                "patients",
-                "Pacientes e Prontuários",
-                "/specialist/patients"
-            )
-        );
-    }
+    const items = SPECIALIST_ITEMS;
 
     return withSelect(items, activeId);
 }
 
-export function useReceptionSidebar(activeId) {
+export function useEmployeeSidebar(activeId) {
 
-    const { user } = useAuth();
-
-    const verAgenda = usePermissao("ver_agenda");
-
-    const verPacientes = usePermissao("ver_pacientes");
-
-    const verFinanceiro =
-        usePermissao("ver_financeiro");
-
-    if (user?.perfil?.papel === "Dono") {
-        return withSelect(OWNER_ITEMS, activeId);
-    }
-
-    const items = [];
-
-    if (verAgenda) {
-
-        items.push(
-            item(
-                "dashboard",
-                "Painel Principal",
-                "/employee/dashboard"
-            )
-        );
-
-    }
-
-    if (verPacientes) {
-
-        items.push(
-            item(
-                "patients",
-                "Pacientes",
-                "/employee/patients"
-            )
-        );
-
-    }
-
-    if (verFinanceiro) {
-
-        items.push(
-            item(
-                "financial",
-                "Financeiro",
-                "/employee/financial"
-            )
-        );
-
-    }
+    const items = EMPLOYEE_ITEMS;
 
     return withSelect(items, activeId);
 }

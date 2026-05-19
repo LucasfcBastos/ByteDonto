@@ -7,7 +7,7 @@ import { formatCPF } from "../../utils/formatters";
 import Section from "../../components/section/SectionAuth";
 import SideBar from "../../components/bar/SideBar";
 import Card from "../../components/card/CardInfo";
-import { useReceptionSidebar } from "../../hooks/useSidebar";
+import { useEmployeeSidebar } from "../../hooks/useSidebar";
 
 const FORM_INICIAL = {
     paciente_id: "",
@@ -40,7 +40,7 @@ function ReceptionDashboard() {
     // Busca rápida
     const [quickSearch, setQuickSearch] = useState("");
 
-    const opc_bar = useReceptionSidebar("dashboard");
+    const opc_bar = useEmployeeSidebar("dashboard");
 
     useEffect(() => {
         Promise.all([

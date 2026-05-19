@@ -5,7 +5,7 @@ import { apiGetPacientes } from "../../services/api";
 import { formatCPF, formatPhone } from "../../utils/formatters";
 import Section from "../../components/section/SectionAuth";
 import SideBar from "../../components/bar/SideBar";
-import { useReceptionSidebar } from "../../hooks/useSidebar";
+import { useEmployeeSidebar } from "../../hooks/useSidebar";
 import '../../styles/clinic.css';
 
 /* MAIN COMPONENT */
@@ -16,7 +16,7 @@ function ListPatients() {
     const [loading, setLoading] = useState(true);
 
     // Menu da recepção
-    const opc_bar = useReceptionSidebar("patients");
+    const opc_bar = useEmployeeSidebar("patients");
 
     useEffect(() => {
         const fetchPacientes = async () => {
