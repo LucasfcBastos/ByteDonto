@@ -202,7 +202,7 @@ def criar_membro(clinic_id):
             return jsonify({"error": "Usuário já está na clínica"}), 409
 
         # --------------------------------------------------
-        # cria vínculo (SEM role aqui)
+        # cria convite (status "sent" — aguarda aceite)
         # --------------------------------------------------
         result = (
             supabase
@@ -210,13 +210,13 @@ def criar_membro(clinic_id):
             .insert({
                 "clinic_id": clinic_id,
                 "user_id": target_user_id,
-                "status": "active"
+                "status": "sent"
             })
             .execute()
         )
 
         return jsonify({
-            "message": "Membro adicionado com sucesso",
+            "message": "Convite enviado com sucesso",
             "team": result.data[0]
         }), 201
 
@@ -280,6 +280,110 @@ def remover_membro(clinic_id, usuario_id):
         return jsonify({
             "message": "Membro removido com sucesso"
         }), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+# =========================================================
+# LISTAR CONVITES PENDENTES DO USUÁRIO LOGADO
+# =========================================================
+@usuarios_bp.route("/solicitacoes", methods=["GET"])
+def listar_solicitacoes():
+
+    token = get_token(request)
+    if not token:
+        return jsonify({"error": "Não autorizado"}), 401
+
+    try:
+        user = supabase.auth.get_user(token).user
+        user_id = user.id
+
+        teams_result = (
+            supabase
+            .table("teams")
+            .select("id, clinic_id, clinics(id, name)")
+            .eq("user_id", user_id)
+            .eq("status", "sent")
+            .execute()
+        )
+
+        solicitacoes = []
+        for team in teams_result.data:
+            clinica = team.get("clinics") or {}
+            solicitacoes.append({
+                "team_id": team["id"],
+                "clinic_id": team["clinic_id"],
+                "clinic_name": clinica.get("name", "Clínica"),
+            })
+
+        return jsonify(solicitacoes), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+# =========================================================
+# ACEITAR CONVITE
+# =========================================================
+@usuarios_bp.route("/<team_id>/aceitar", methods=["PATCH"])
+def aceitar_convite(team_id):
+
+    token = get_token(request)
+    if not token:
+        return jsonify({"error": "Não autorizado"}), 401
+
+    try:
+        user = supabase.auth.get_user(token).user
+        user_id = user.id
+
+        result = (
+            supabase
+            .table("teams")
+            .update({"status": "active"})
+            .eq("id", team_id)
+            .eq("user_id", user_id)
+            .eq("status", "sent")
+            .execute()
+        )
+
+        if not result.data:
+            return jsonify({"error": "Convite não encontrado ou já respondido"}), 404
+
+        return jsonify({"message": "Convite aceito com sucesso"}), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+# =========================================================
+# RECUSAR CONVITE
+# =========================================================
+@usuarios_bp.route("/<team_id>/recusar", methods=["PATCH"])
+def recusar_convite(team_id):
+
+    token = get_token(request)
+    if not token:
+        return jsonify({"error": "Não autorizado"}), 401
+
+    try:
+        user = supabase.auth.get_user(token).user
+        user_id = user.id
+
+        result = (
+            supabase
+            .table("teams")
+            .update({"status": "rejected"})
+            .eq("id", team_id)
+            .eq("user_id", user_id)
+            .eq("status", "sent")
+            .execute()
+        )
+
+        if not result.data:
+            return jsonify({"error": "Convite não encontrado ou já respondido"}), 404
+
+        return jsonify({"message": "Convite recusado"}), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500

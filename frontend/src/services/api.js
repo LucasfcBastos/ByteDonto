@@ -81,6 +81,62 @@ export async function apiAtualizarPaciente(token, pacienteId, pacienteData) {
 }
 
 /* --- CONSULTAS --- */
+export async function apiGetConsultasClinica(token, clinicId, opts = {}) {
+    const params = new URLSearchParams({ clinic_id: clinicId });
+    if (opts.specialist_id) params.append("specialist_id", opts.specialist_id);
+    if (opts.patient_id) params.append("patient_id", opts.patient_id);
+    const res = await fetch(`${API_URL}/api/consultas/?${params}`, {
+        headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Erro ao buscar consultas");
+    return data;
+}
+
+export async function apiAtualizarConsulta(token, consultaId, consultaData) {
+    const res = await fetch(`${API_URL}/api/consultas/${consultaId}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(consultaData),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Erro ao atualizar consulta");
+    return data;
+}
+
+export async function apiCancelarConsulta(token, consultaId) {
+    const res = await fetch(`${API_URL}/api/consultas/${consultaId}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Erro ao cancelar consulta");
+    return data;
+}
+
+export async function apiGetPacientesClinica(token, clinicId) {
+    const res = await fetch(`${API_URL}/api/pacientes/?clinic_id=${clinicId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Erro ao buscar pacientes");
+    return data;
+}
+
+export async function apiGetFinanceiroClinica(token, clinicId, status = null) {
+    const params = new URLSearchParams({ clinic_id: clinicId });
+    if (status) params.append("status", status);
+    const res = await fetch(`${API_URL}/api/financeiro/?${params}`, {
+        headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Erro ao buscar financeiro");
+    return data;
+}
+
 export async function apiGetConsultas(token) {
     const res = await fetch(`${API_URL}/api/consultas/`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -105,6 +161,15 @@ export async function apiCriarConsulta(token, consultaData) {
 }
 
 /* --- CLÍNICAS --- */
+export async function apiGetClinicsVinculadas(token) {
+    const res = await fetch(`${API_URL}/api/clinicas/vinculadas`, {
+        headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Erro ao buscar clínicas vinculadas");
+    return data;
+}
+
 export async function apiGetClinics(token) {
     const res = await fetch(`${API_URL}/api/clinicas/`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -220,6 +285,35 @@ export async function apiRemoverMembro(
     if (!response.ok) {
         throw new Error(data.error);
     }
+    return data;
+}
+
+export async function apiGetSolicitacoes(token) {
+    const res = await fetch(`${API_URL}/api/usuarios/solicitacoes`, {
+        headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Erro ao buscar convites");
+    return data;
+}
+
+export async function apiAceitarSolicitacao(token, teamId) {
+    const res = await fetch(`${API_URL}/api/usuarios/${teamId}/aceitar`, {
+        method: "PATCH",
+        headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Erro ao aceitar convite");
+    return data;
+}
+
+export async function apiRecusarSolicitacao(token, teamId) {
+    const res = await fetch(`${API_URL}/api/usuarios/${teamId}/recusar`, {
+        method: "PATCH",
+        headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Erro ao recusar convite");
     return data;
 }
 

@@ -14,6 +14,8 @@ import { useOwnerSidebar } from "../../../hooks/useSidebar";
 
 import Section from "../../../components/section/SectionAuth";
 import SideBar from "../../../components/bar/SideBar";
+import AlertConfirmAction from "../../../components/alerts/AlertConfirmAction";
+import AlertError from "../../../components/alerts/AlertError";
 
 import "../../../styles/clinic.css";
 import "../../../styles/Forms.css";
@@ -150,6 +152,8 @@ function ListTeam() {
 
     // Remover
     const [removendoId, setRemovendoId] = useState(null);
+    const [confirmRemover, setConfirmRemover] = useState(null);
+    const [erroAlert, setErroAlert] = useState(null);
 
     // =========================================================
     // CARREGAR EQUIPE
@@ -358,13 +362,13 @@ function ListTeam() {
         // REMOVER MEMBRO
         // =========================================================
 
-        async function handleRemover(user_id) {
-        const confirmar = window.confirm(
-            "Deseja remover este membro da clínica?"
-        );
+        function handleRemover(user_id) {
+        setConfirmRemover(user_id);
+    }
 
-        if (!confirmar) return;
-
+    async function handleRemoverConfirmado() {
+        const user_id = confirmRemover;
+        setConfirmRemover(null);
         setRemovendoId(user_id);
 
         try {
@@ -385,7 +389,7 @@ function ListTeam() {
             await refreshUser();
 
         } catch (e) {
-            alert(e.message);
+            setErroAlert(e.message);
         } finally {
             setRemovendoId(null);
         }
@@ -403,6 +407,26 @@ function ListTeam() {
                 opc={opc_bar}
                 styles="owner"
             />
+
+            {confirmRemover && (
+                <AlertConfirmAction
+                    styles="owner"
+                    title="Remover Membro"
+                    text="Deseja remover este membro da clínica? Esta ação não pode ser desfeita."
+                    confirmText="Remover"
+                    cancelText="Cancelar"
+                    onConfirm={handleRemoverConfirmado}
+                    onCancel={() => setConfirmRemover(null)}
+                />
+            )}
+
+            {erroAlert && (
+                <AlertError
+                    styles="owner"
+                    text={erroAlert}
+                    onClose={() => setErroAlert(null)}
+                />
+            )}
 
             {/* ========================================================= */}
             {/* MODAL CRIAR */}
@@ -801,13 +825,32 @@ function ListTeam() {
                                             {/* STATUS */}
 
                                             <div>
-
-                                                <p>
+                                                <span
+                                                    style={{
+                                                        padding: "4px 10px",
+                                                        borderRadius: "20px",
+                                                        fontSize: "12px",
+                                                        fontWeight: 700,
+                                                        background:
+                                                            membro.status === "active"
+                                                                ? "rgba(34,197,94,0.12)"
+                                                                : membro.status === "sent"
+                                                                ? "rgba(251,191,36,0.15)"
+                                                                : "rgba(239,68,68,0.1)",
+                                                        color:
+                                                            membro.status === "active"
+                                                                ? "#22C55E"
+                                                                : membro.status === "sent"
+                                                                ? "#D97706"
+                                                                : "#EF4444",
+                                                    }}
+                                                >
                                                     {membro.status === "active"
                                                         ? "Ativo"
+                                                        : membro.status === "sent"
+                                                        ? "Pendente"
                                                         : "Inativo"}
-                                                </p>
-
+                                                </span>
                                             </div>
 
                                             {/* AÇÕES */}

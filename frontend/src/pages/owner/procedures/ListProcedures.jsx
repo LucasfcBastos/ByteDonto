@@ -10,6 +10,8 @@ import {
 import { formatCurrency } from "../../../utils/formatters";
 import Section from "../../../components/section/SectionAuth";
 import SideBar from "../../../components/bar/SideBar";
+import AlertConfirmAction from "../../../components/alerts/AlertConfirmAction";
+import AlertError from "../../../components/alerts/AlertError";
 import { useOwnerSidebar } from "../../../hooks/useSidebar";
 import "../../../styles/clinic.css";
 import "../../../styles/Table.css";
@@ -24,6 +26,9 @@ function ListProcedures() {
     const [loading, setLoading] = useState(true);
     const [erro, setErro] = useState(null);
     const [atualizandoId, setAtualizandoId] = useState(null);
+    const [confirmStatus, setConfirmStatus] = useState(null);
+    const [confirmDeletar, setConfirmDeletar] = useState(null);
+    const [erroAlert, setErroAlert] = useState(null);
 
     const opc_bar = useOwnerSidebar("procedures");
 
@@ -52,36 +57,38 @@ function ListProcedures() {
             .catch((err) => console.error("Erro ao carregar clínica", err));
     }, [token, id_clinic]);
 
-    async function handleAlterarStatus(procedimento) {
-        const novoStatus = procedimento.status === "Ativo" ? "Inativo" : "Ativo";
-        const confirmar = window.confirm(
-            `Deseja ${novoStatus === "Inativo" ? "inativar" : "reativar"} o procedimento "${procedimento.name}"?`
-        );
-        if (!confirmar) return;
+    function handleAlterarStatus(procedimento) {
+        setConfirmStatus(procedimento);
+    }
 
+    async function handleAlterarStatusConfirmado() {
+        const procedimento = confirmStatus;
+        const novoStatus = procedimento.status === "Ativo" ? "Inativo" : "Ativo";
+        setConfirmStatus(null);
         setAtualizandoId(procedimento.id);
         try {
             await apiAlterarStatusProcedimento(token, procedimento.id, novoStatus);
             await carregarProcedimentos();
         } catch (err) {
-            alert(err.message);
+            setErroAlert(err.message);
         } finally {
             setAtualizandoId(null);
         }
     }
 
-    async function handleDeletar(procedimento) {
-        const confirmar = window.confirm(
-            `Deseja remover permanentemente o procedimento "${procedimento.name}"?`
-        );
-        if (!confirmar) return;
+    function handleDeletar(procedimento) {
+        setConfirmDeletar(procedimento);
+    }
 
+    async function handleDeletarConfirmado() {
+        const procedimento = confirmDeletar;
+        setConfirmDeletar(null);
         setAtualizandoId(procedimento.id);
         try {
             await apiDeletarProcedimento(token, procedimento.id);
             await carregarProcedimentos();
         } catch (err) {
-            alert(err.message);
+            setErroAlert(err.message);
         } finally {
             setAtualizandoId(null);
         }
@@ -99,6 +106,38 @@ function ListProcedures() {
         <>
             <Section type_styles="owner" />
             <SideBar opc={opc_bar} styles="owner" />
+
+            {confirmStatus && (
+                <AlertConfirmAction
+                    styles="owner"
+                    title={confirmStatus.status === "Ativo" ? "Inativar Procedimento" : "Reativar Procedimento"}
+                    text={`Deseja ${confirmStatus.status === "Ativo" ? "inativar" : "reativar"} o procedimento "${confirmStatus.name}"?`}
+                    confirmText={confirmStatus.status === "Ativo" ? "Inativar" : "Reativar"}
+                    cancelText="Cancelar"
+                    onConfirm={handleAlterarStatusConfirmado}
+                    onCancel={() => setConfirmStatus(null)}
+                />
+            )}
+
+            {confirmDeletar && (
+                <AlertConfirmAction
+                    styles="owner"
+                    title="Excluir Procedimento"
+                    text={`Deseja remover permanentemente o procedimento "${confirmDeletar.name}"? Esta ação não pode ser desfeita.`}
+                    confirmText="Excluir"
+                    cancelText="Cancelar"
+                    onConfirm={handleDeletarConfirmado}
+                    onCancel={() => setConfirmDeletar(null)}
+                />
+            )}
+
+            {erroAlert && (
+                <AlertError
+                    styles="owner"
+                    text={erroAlert}
+                    onClose={() => setErroAlert(null)}
+                />
+            )}
 
             <main className="mainBar owner register">
 
@@ -297,6 +336,21 @@ function ListProcedures() {
                                                     : p.status === "Ativo"
                                                     ? "Inativar"
                                                     : "Reativar"}
+                                            </button>
+
+                                            <button
+                                                onClick={() => handleDeletar(p)}
+                                                disabled={atualizandoId === p.id}
+                                                className="submit"
+                                                style={{
+                                                    padding: "6px 14px",
+                                                    fontSize: "12px",
+                                                    background: "rgba(239,68,68,0.1)",
+                                                    color: "#EF4444",
+                                                    boxShadow: "none",
+                                                }}
+                                            >
+                                                Excluir
                                             </button>
                                         </div>
                                     </div>

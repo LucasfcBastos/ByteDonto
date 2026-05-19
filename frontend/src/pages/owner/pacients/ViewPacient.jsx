@@ -110,7 +110,7 @@ function ViewPacient() {
                                         {paciente.name}
                                     </h1>
                                     <p className="text75">
-                                        {calcIdade(paciente.data_birth)} anos ·{" "}
+                                        {calcIdade(paciente.birth_date)} anos ·{" "}
                                         {paciente.gender}
                                     </p>
                                 </div>
@@ -156,7 +156,7 @@ function ViewPacient() {
                                 <div className="flex-inpus">
                                     <InfoRow
                                         label="Data de Nascimento"
-                                        value={formatDate(paciente.data_birth)}
+                                        value={formatDate(paciente.birth_date)}
                                     />
                                     <InfoRow
                                         label="Gênero"

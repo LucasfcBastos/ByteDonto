@@ -5,7 +5,7 @@ from app.utils import get_token, get_user_clinica
 pacientes_bp = Blueprint("pacientes", __name__)
 
 CAMPOS_PACIENTE = {
-    "name", "email", "whatsapp", "phone_number", "data_birth",
+    "name", "email", "whatsapp", "phone_number", "birth_date",
     "cpf", "rg", "gender", "address", "city", "states", "country",
     "emergency_name", "emergency_phone",
     "known_allergias", "systemic_conditions", "continuous_medications",
@@ -20,7 +20,11 @@ def listar_pacientes():
         return jsonify({"error": "Não autorizado"}), 401
 
     try:
-        _, clinic_id = get_user_clinica(token)
+        clinic_id_param = request.args.get("clinic_id")
+        if clinic_id_param:
+            clinic_id = clinic_id_param
+        else:
+            _, clinic_id = get_user_clinica(token)
         result = supabase.table("patients").select("*").eq("clinic_id", clinic_id).execute()
         return jsonify(result.data), 200
     except Exception as e:
@@ -54,7 +58,7 @@ def criar_paciente():
         # Campos obrigatórios
         name = (data.get("name") or data.get("nome") or "").strip()
         cpf = (data.get("cpf") or "").strip()
-        data_birth = data.get("data_birth") or data.get("data_nascimento")
+        data_birth = data.get("birth_date") or data.get("data_birth") or data.get("data_nascimento")
         gender = (data.get("gender") or data.get("genero") or "").strip()
         whatsapp = (data.get("whatsapp") or data.get("telefone_whatsapp") or "").strip()
         email = (data.get("email") or "").strip()
@@ -90,7 +94,7 @@ def criar_paciente():
             "name": name,
             "cpf": cpf,
             "rg": data.get("rg") or None,
-            "data_birth": data_birth,
+            "birth_date": data_birth,
             "gender": gender,
             "whatsapp": whatsapp,
             "phone_number": data.get("phone_number") or None,

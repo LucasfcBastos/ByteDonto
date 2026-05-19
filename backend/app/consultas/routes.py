@@ -12,7 +12,11 @@ def listar_consultas():
         return jsonify({"error": "Não autorizado"}), 401
 
     try:
-        _, clinic_id = get_user_clinica(token)
+        clinic_id_param = request.args.get("clinic_id")
+        if clinic_id_param:
+            clinic_id = clinic_id_param
+        else:
+            _, clinic_id = get_user_clinica(token)
 
         query = (
             supabase.table("consultations")
@@ -24,6 +28,10 @@ def listar_consultas():
         patient_id = request.args.get("patient_id") or request.args.get("paciente_id")
         if patient_id:
             query = query.eq("patient_id", patient_id)
+
+        specialist_id = request.args.get("specialist_id")
+        if specialist_id:
+            query = query.eq("specialist_id", specialist_id)
 
         result = query.execute()
         return jsonify(result.data), 200

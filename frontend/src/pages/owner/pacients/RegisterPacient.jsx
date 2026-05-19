@@ -50,7 +50,7 @@ function RegisterPacient() {
             name: nome,
             cpf: cpf.replace(/\D/g, ''),
             rg: rg || undefined,
-            data_birth: data_nascimento,
+            birth_date: data_nascimento,
             gender: genero,
             email,
             whatsapp: tel_whatsapp.replace(/\D/g, ''),

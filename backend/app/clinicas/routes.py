@@ -33,6 +33,32 @@ def criar_clinica():
         return jsonify({"error": str(e)}), 500
 
 
+@clinicas_bp.route("/vinculadas", methods=["GET"])
+def listar_clinicas_vinculadas():
+    token = get_token(request)
+    if not token:
+        return jsonify({"error": "Não autorizado"}), 401
+
+    try:
+        user_response = supabase.auth.get_user(token)
+        user_id = user_response.user.id
+
+        result = (
+            supabase
+            .table("teams")
+            .select("clinic_id, clinics(*)")
+            .eq("user_id", user_id)
+            .eq("status", "active")
+            .execute()
+        )
+
+        clinicas = [row["clinics"] for row in result.data if row.get("clinics")]
+        return jsonify(clinicas), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
 @clinicas_bp.route("/", methods=["GET"])
 def listar_clinicas():
 

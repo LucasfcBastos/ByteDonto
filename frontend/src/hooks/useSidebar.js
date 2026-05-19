@@ -102,7 +102,7 @@ const SPECIALIST_ITEMS = [
     {
         id: "patients",
         icon: PatientIcon,
-        name: "Painel Principal",
+        name: "Pacientes",
         url: "/specialist/patients"
     },
 ];

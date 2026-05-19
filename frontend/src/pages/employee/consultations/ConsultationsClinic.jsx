@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../../context/AuthContext";
-import { apiGetClinics } from "../../../services/api";
+import { apiGetClinicsVinculadas } from "../../../services/api";
 import { useEmployeeSidebar } from "../../../hooks/useSidebar";
 
 import Section from "../../../components/section/SectionAuth";
@@ -27,7 +27,7 @@ function ConsultationsClinic() {
 
         if (!token) return;
 
-        apiGetClinics(token)
+        apiGetClinicsVinculadas(token)
             .then((data) => {
                 setClinicas(data || []);
             })
@@ -131,7 +131,7 @@ function ConsultationsClinic() {
                             <CampList
                                 key={item.id}
 
-                                clinic_url={`/owner/team/${item.id}`}
+                                clinic_url={`/employee/consultations/${item.id}`}
 
                                 clinic_id={item.id}
                                 clinic_logo={item.logo}

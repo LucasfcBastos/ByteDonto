@@ -12,15 +12,34 @@ def listar_lancamentos():
         return jsonify({"error": "Não autorizado"}), 401
 
     try:
-        _, clinic_id = get_user_clinica(token)
+        clinic_id_param = request.args.get("clinic_id")
+        if clinic_id_param:
+            clinic_id = clinic_id_param
+        else:
+            _, clinic_id = get_user_clinica(token)
+
+        cons_result = (
+            supabase.table("consultations")
+            .select("id")
+            .eq("clinic_id", clinic_id)
+            .execute()
+        )
+        cons_ids = [c["id"] for c in cons_result.data]
+
+        if not cons_ids:
+            return jsonify([]), 200
 
         query = (
             supabase.table("launches")
             .select("*, consultations(id, patient_id, clinic_id, patients(name))")
-            .execute()
+            .in_("consultations_id", cons_ids)
         )
 
-        result = query
+        status = request.args.get("status") or request.args.get("status_pagamento")
+        if status:
+            query = query.eq("status", status)
+
+        result = query.execute()
         return jsonify(result.data), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500

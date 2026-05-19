@@ -48,24 +48,25 @@ import OwnerFinancial from "../pages/owner/financial/Financial";
 /* ===== Specialist Dashboard */
 
 import SpecialistDashClinic from "../pages/specialist/dashboard/DashClinic";
+import SpecialistDashboard from "../pages/specialist/dashboard/Dashboard";
 
 /* ===== Specialist Consulta */
 
 import SpecialistScheduleClinic from "../pages/specialist/schedule/ScheduleClinic";
+import SpecialistSchedule from "../pages/specialist/schedule/Schedule";
 
 /* ===== Specialist Paciente */
 
 import SpecialistPatientClinic from "../pages/specialist/patient/PatientClinic";
+import SpecialistListPatients from "../pages/specialist/patient/ListPatients";
 
-import SpecialistDashboard from "../pages/specialist/Dashboard";
-import SpecialistListPatients from "../pages/specialist/ListPatients";
-import SpecialistViewRecord from "../pages/specialist/ViewRecord";
 
 /* Telas Employee */
 
 /* ===== Employee Dashboard */
 
 import EmployeeDashClinic from "../pages/employee/dashboard/DashClinic";
+import EmployeeDashboard from "../pages/employee/dashboard/Dashboard";
 
 /* ===== Employee Paciente */
 
@@ -74,10 +75,12 @@ import EmployeePatientClinic from "../pages/employee/patient/PatientClinic";
 /* ===== Employee Consulta */
 
 import EmployeeConsultationsClinic from "../pages/employee/consultations/ConsultationsClinic";
+import EmployeeListConsultations from "../pages/employee/consultations/ListConsultations";
 
 /* ===== Employee Financeiro */
 
 import EmployeeFinancialClinic from "../pages/employee/financial/FinancialClinic";
+import EmployeeFinancial from "../pages/employee/financial/Financial";
 
 import ReceptionDashboard from "../pages/employee/Dashboard";
 import RegisterPatient from "../pages/employee/RegisterPatient";
@@ -145,24 +148,26 @@ export function AppRoutes() {
 
           {/* ROTAS DO ESPECIALISTA (DENTISTA) */}
           <Route path="/specialist/dashboard" element={<PrivateRoute allowedRoles={["Specialist"]}><SpecialistDashClinic /></PrivateRoute>} />
-          
+          <Route path="/specialist/dashboard/:id_clinic" element={<PrivateRoute allowedRoles={["Specialist"]}><SpecialistDashboard /></PrivateRoute>} />
+
           <Route path="/specialist/schedule" element={<PrivateRoute allowedRoles={["Specialist"]}><SpecialistScheduleClinic /></PrivateRoute>} />
-          
+          <Route path="/specialist/schedule/:id_clinic" element={<PrivateRoute allowedRoles={["Specialist"]}><SpecialistSchedule /></PrivateRoute>} />
+
           <Route path="/specialist/patients" element={<PrivateRoute allowedRoles={["Specialist"]}><SpecialistPatientClinic /></PrivateRoute>} />
-
-          {/*=================================================================================================*/}
-
-          <Route path="/specialist/records" element={<PrivateRoute allowedRoles={["Specialist"]}><SpecialistListPatients /></PrivateRoute>} />
-          <Route path="/specialist/patient/view" element={<PrivateRoute allowedRoles={["Specialist"]}><SpecialistViewRecord /></PrivateRoute>} />
+          <Route path="/specialist/patients/:id_clinic" element={<PrivateRoute allowedRoles={["Specialist"]}><SpecialistListPatients /></PrivateRoute>} />
+          <Route path="/specialist/patients/:id_clinic/view-pacient/:id_pacient" element={<PrivateRoute allowedRoles={["Specialist"]}><OwnerViewPacient /></PrivateRoute>} />
 
           {/* ROTAS DA RECEPÇÃO */}
           <Route path="/employee/dashboard" element={<PrivateRoute allowedRoles={["Employee"]}><EmployeeDashClinic /></PrivateRoute>} />
-          
+          <Route path="/employee/dashboard/:id_clinic" element={<PrivateRoute allowedRoles={["Employee"]}><EmployeeDashboard /></PrivateRoute>} />
+
           <Route path="/employee/pacients" element={<PrivateRoute allowedRoles={["Employee"]}><EmployeePatientClinic /></PrivateRoute>} />
-          
+
           <Route path="/employee/consultations" element={<PrivateRoute allowedRoles={["Employee"]}><EmployeeConsultationsClinic /></PrivateRoute>} />
+          <Route path="/employee/consultations/:id_clinic" element={<PrivateRoute allowedRoles={["Employee"]}><EmployeeListConsultations /></PrivateRoute>} />
 
           <Route path="/employee/financial" element={<PrivateRoute allowedRoles={["Employee"]}><EmployeeFinancialClinic /></PrivateRoute>} />
+          <Route path="/employee/financial/:id_clinic" element={<PrivateRoute allowedRoles={["Employee"]}><EmployeeFinancial /></PrivateRoute>} />
 
           {/*=================================================================================================*/}
 

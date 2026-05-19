@@ -52,7 +52,7 @@ function EditPacient() {
                 setNome(p.name || "");
                 setCpf(maskCPF(p.cpf || ""));
                 setRg(p.rg || "");
-                setDataNascimento(p.data_birth ? p.data_birth.split("T")[0] : "");
+                setDataNascimento(p.birth_date ? p.birth_date.split("T")[0] : "");
                 setGenero(p.gender || "Feminino");
                 setStatus(p.status || "Ativo");
                 setTelWhatsapp(maskPhone(p.whatsapp || ""));
@@ -83,7 +83,7 @@ function EditPacient() {
             name: nome,
             cpf: cpf.replace(/\D/g, ""),
             rg: rg || undefined,
-            data_birth: data_nascimento,
+            birth_date: data_nascimento,
             gender: genero,
             status,
             email,
